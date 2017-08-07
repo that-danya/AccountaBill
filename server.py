@@ -21,12 +21,40 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route('/login')
+@app.route('/login', methods='[GET]')
 def login_user():
     """Login user."""
 
     ## create user page for login to redirect to.
-    return render_template('/login.html')
+    return render_template('/login_form.html')
+
+
+@app.route('/login', methods='[POST]')
+def process_login():
+    """Process user."""
+
+    email = requst.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first()
+
+    # don't log in user if not a user name or password match
+    if not user:
+        flash('No a valid user login.')
+        return redirect('/login')
+    if user.password != password:
+        flash('Incorrect password. Please try again.')
+        return redirect('/login')
+
+    # establish session cookie for user
+    session['user_id'] = user.user_id
+
+    # Signal to user that they have been logged in.
+    flash('You have been logged in!')
+
+    ## create user page for login to redirect to.
+    #return redirect('/users/%s' % user.user_id)
+    return redirect('/')
 
 
 @app.route('/logout')
