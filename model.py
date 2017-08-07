@@ -79,9 +79,44 @@ class Objective(db.Model):
         return "<Objective obj_id=%s complete=%s>" % (self.obj_id, self.complete)
 
 
-class 
+class Message_To_Send(db.Model):
+    """Define messages to send to Text table for objective date notifications"""
+
+    __tablename__ = 'messages'
+
+    message_id = db.Column(db.Integer,
+                           autoincrement=True,
+                           primary_key=True)
+    message_text = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        """Provide helpful representation when printed"""
+
+        return "<Message message_id=%s>" % (self.message_id)
 
 
+class Text_To_Send(db.Model):
+    """Create listings of texts to send user, by date (then delete)"""
+
+    __tablename__ = 'texts'
+
+    text_id = db.Column(db.Integer,
+                        autoincrement=True,
+                        primary_key=True)
+    message_id = db.Column(db.Integer, db.ForeignKey('messages.message_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    obj_id = db.Column(db.Integer, db.ForeignKey('objectives.obj_id'))
+    date = db.Column(db.String(100), nullable=False)
+
+    # def relationships
+    user = db.relationship('User', backref='text')
+    message = db.relationship('Message_To_Send', backref='text')
+    objective = db.relationship('Objective', backref='text')
+
+    def __repr__(self):
+        """Provide helpful representation when printed"""
+
+        return "<Text text_id=%s message_id=%S>" % (self.text_id, self.message_id)
 
 #####################################################################
 # Helper functions
