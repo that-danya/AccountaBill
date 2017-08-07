@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>AccountaBill</h1>
+
+<h3>Would you like to sign up for an account?</h3>
+<form action='/register' method='GET'>
+ <!--    <div>
+        <label>Email:
+            <input type='email' name='email' required>
+        </label>
+    </div>
+    <div>
+        <label>Password:
+            <input type='password' name='password' required>
+        </label>
+    </div> -->
+    <div>
+        <input type='submit' value='Register' required>
+    </div>
+</form>
+
+{% endblock %}
