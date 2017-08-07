@@ -9,6 +9,7 @@ db = SQLAlchemy()
 #####################################################################
 # Model definitions
 
+
 class User(db.Model):
     """User of AccountaBill website."""
 
@@ -24,17 +25,17 @@ class User(db.Model):
     phone = db.Column(db.String(15), nullable=False)
     ponts = db.Column(db.Float, nullable=True)
 
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<User user_id=%s email=%s>" % (self.user_id,
                                                self.email)
 
-class Goals(db.Model):
+
+class Goal(db.Model):
     """Goal of user."""
 
-    __tablename__ = "users"
+    __tablename__ = "goals"
 
     goal_id = db.Column(db.Integer,
                         autoincrement=True,
@@ -50,12 +51,41 @@ class Goals(db.Model):
         """Provide helpful representation when printed"""
 
         return "<Goal goal_id=%s complete=%s>" % (self.goal_id, self.complete)
- 
+
+
+class Objective(db.Model):
+    """Objectives connected to goals of user with duedates."""
+
+    __tablename__ = "objectives"
+
+    obj_id = db.Column(db.Integer,
+                       autoincrement=True,
+                       primary_key=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('goals.goal_id'))
+    obj_text = db.Column(db.String(100), nullable=False)
+    due_date = db.Column(db.DateTime, nullable=False)
+    complete = db.Column(db.Boolean, nullable=False)
+    point_cost = db.Column(db.Float, nullable=False)
+    message_id = db.Column(db.Integer, db.ForeignKey('messages.message_id'))
+    img_url = db.Column(db.String(100))
+
+    # est relationship with User
+    goal = db.relationship('Goal', backref='objective')
+    message = db.relationship('Message_To_Send', backref='objective')
+
+    def __repr__(self):
+        """Provide helpful representation when printed"""
+
+        return "<Objective obj_id=%s complete=%s>" % (self.obj_id, self.complete)
+
+
+class 
 
 
 
 #####################################################################
 # Helper functions
+
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
