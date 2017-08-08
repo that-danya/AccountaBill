@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-#from model import connect_to_db, db, User, Goal, Objective, Message, DebugToolbarExtension
+from model import connect_to_db, db, User, Goal, Objective, Message
 
 app = Flask(__name__)
 
@@ -21,7 +21,7 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route('/login', methods='[GET]')
+@app.route('/login', methods=['GET'])
 def login_user():
     """Login user."""
 
@@ -29,11 +29,11 @@ def login_user():
     return render_template('/login_form.html')
 
 
-@app.route('/login', methods='[POST]')
+@app.route('/login', methods=['POST'])
 def process_login():
     """Process user."""
 
-    email = requst.form['email']
+    email = request.form['email']
     password = request.form['password']
 
     user = User.query.filter_by(email=email).first()
@@ -68,7 +68,7 @@ def logout_user():
     return redirect('/')
 
 
-@app.route('/register', methods='[GET]')
+@app.route('/register', methods=['GET'])
 def register_form():
     """Show register form for user."""
 
@@ -78,7 +78,7 @@ def register_form():
 
     return render_template('/register_form.html')
 
-@app.route('/register', methods='[POST]')
+@app.route('/register', methods=['POST'])
 def register_process():
     """Process registration."""
 
@@ -108,4 +108,6 @@ def register_process():
 # if running this page, run debugger, load to host
 if __name__ == "__main__":
 
+    connect_to_db(app)
+    DebugToolbarExtension(app)
     app.run(debug = True, host="0.0.0.0")
