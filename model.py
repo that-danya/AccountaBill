@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-DB_URI = 'postgresql:///accountabills'
+# DB_URI = 'postgresql:///accountabills'
 
 # This is the connection to the PostgreSQL database;
 
@@ -25,13 +25,14 @@ class User(db.Model):
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
-    ponts = db.Column(db.Float, nullable=True)
+    points = db.Column(db.Float, nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<User user_id=%s email=%s>" % (self.user_id,
                                                self.email)
+
 
 
 class Goal(db.Model):
@@ -128,7 +129,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///accountabills'
     app.config['SQLALCHEMY_ECHO'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app

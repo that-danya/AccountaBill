@@ -52,9 +52,8 @@ def process_login():
     # Signal to user that they have been logged in.
     flash('You have been logged in!')
 
-    ## create user page for login to redirect to.
-    #return redirect('/users/%s' % user.user_id)
-    return redirect('/')
+    # create user page for login to redirect to user page
+    return redirect('/user/%s' % user.user_id)
 
 
 @app.route('/logout')
@@ -78,17 +77,21 @@ def register_form():
 
     return render_template('/register_form.html')
 
+
 @app.route('/register', methods=['POST'])
 def register_process():
     """Process registration."""
 
     # Get form variables
+    email = request.form['email']
+    password = request.form['password']
     fname = request.form['fname']
     lname = request.form['lname']
     phone = request.form['phonenum']
+    points = 10.0
 
     # Start DB transaction by assigning variables to User class
-    new_user = User(email=email, password=password, fname=fname, lname=lname, phone=phone)
+    new_user = User(email=email, password=password, fname=fname, lname=lname, phone=phone, points=points)
 
     # Commit to DB
     db.session.add(new_user)
@@ -97,7 +100,25 @@ def register_process():
     # Flash message confirming add, redirect to home
     ## TODO Change this to redirect to userpage
     flash('User %s added.' % email)
-    return redirect('/')
+
+    # redirect to user's page
+    return redirect('/user/%s' % user.user_id)
+
+
+## TODO Need after registrant flow to direct to CREATE GOAL for first time tute
+#       that instantiates points with user
+
+@app.route('/user/<int:user_id>')
+def user_page(user_id):
+    """Show user page"""
+
+    # get user id from db and set to user var
+    user = User.query.get(user_id)
+
+    # send user to user_page
+    return render_template('user.html', user=user)
+
+## TODO 'BUY' page or Get more points page
 
 
 

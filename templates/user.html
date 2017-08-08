@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ user.email }} ({{ user.user_id }})</h1>
+
+  {% if user.goal %}
+
+    <h2>Goal</h2>
+    <ul>
+    {% for g in user.goal %}
+      <li>
+        <ul> PRINT GOAL HERE
+            {% for o in user.objective %}
+            &nbsp;&nbsp;&nbsp;&nbsp; PRINT OBJECTIVE HERE, DUE HERE
+            {% endfor %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+{% endblock %}
