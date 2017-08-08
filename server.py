@@ -102,7 +102,7 @@ def register_process():
     flash('User %s added.' % email)
 
     # redirect to user's page
-    return redirect('/user/%s' % user.user_id)
+    return redirect('/user/%s' % new_user.user_id)
 
 
 ## TODO Need after registrant flow to direct to CREATE GOAL for first time tute
