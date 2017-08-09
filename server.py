@@ -110,7 +110,7 @@ def register_process():
 
 @app.route('/user/<int:user_id>')
 def user_page(user_id):
-    """Show user page"""
+    """Show user page."""
 
     # get user id from db and set to user var
     user = User.query.get(user_id)
@@ -120,6 +120,27 @@ def user_page(user_id):
 
 ## TODO 'BUY' page or Get more points page
 
+
+@app.route('/define_goal', methods=['GET'])
+def goal_form():
+    """Show goal form."""
+
+    return render_template('goal.html')
+
+# @app.route('/definte_goal' methods=['POST'])
+# def render_goal():
+#     """Process goal data"""
+
+#     # Start DB transaction by assigning variables to Goal class
+#     new_goal = Goal(user=user, goal=goal, complete=complete)
+
+#     # assign variables to Objective class
+
+
+#     db.session.add(new_goal, new_objective)
+#     db.session.commit()
+
+#     return redirect('/set_objective', )
 
 
 ####################################################################
