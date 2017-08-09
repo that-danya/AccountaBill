@@ -1,54 +1,55 @@
 {% extends 'base.html' %}
 
 {% block script_for_page %}
-    <script src="/static/js/goal-page.js"></script>
+    <script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <script src="/static/js/goal.js"></script>
 {% endblock %}
 
 
 {% block content %}
-
+<div class='maindiv'>
 <div id='top-heading'>
     <h2> Let's create a goal with some objectives!</h2>
 </div>
 <div>
     <ul>
-        What is something you want to accomplish? Big or small, just follow the form to capture what you want to complete.
+        What is something you want to accomplish? Big or small, just follow the form to capture what you want to complete. It's a good idea to have more than one objective.
 
     </ul>
-    
+    <!-- Begin Goal/Obj Form -->
     <form action='/define_goal' method='POST' id='goal-form'>
+    
+    <!-- *** Goal ***-->
     <div>
         <label>Goal:<br>
-            <span>I want to <input type='text' name='goal-action' required value='do'/> <input type='text' name='goal-noun' required value='something'/> by <input type='date' name='goal-date' required min='2017-08-07'/></span>
+            I want to 
+            <input type='text' name='goal-action' required value='do'/> 
+            <input type='text' name='goal-noun' required value='something'/> 
+            by 
+            <input type='date' name='goal-date' required min='2017-08-07'/>
             <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->
         </label>
-    </div><br>
-<!--     <div>
-        <label>
-            <input type='submit' value="Submit Goal" required>
-        </label>
-    </div>
-    </form>
+    </div><br> <!-- End goal div-->
 
-    <form action='/define_goal' method='POST' id='goal-form'>
-
-
---> 
-    <!-- TODO: Have objective button here, now objective present, on click add objective which will start increment with 1 -->
-
-    <div class='objective' id='objective1'>
-    <label>Objective:<br>
-        <span>I will <input type='text' name='obj-action' required value='do'/> <input type='text' name='obj-noun' required value='something'/> (Daily? Check the box.) <input type='checkbox' name='daily' checked value='yes_daily'/> <br>
-        I will accomplish this by: <input type='date' name='obj-date' required min='2017-08-07'/></span>
-        <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->
-    </label>
-    </div>
+    <!--  HIDDEN FIELD - Counter -->
+    <input name='objCounter' id='obj-counter' value='0' type='number' hidden>
     
-    <div id='objective-button'>
-        <input type="button" value='Add Another Objective'/>
+    <!-- *** Objectives ***-->
+    <div id='objective-holder'>
+        Objectives:<br>
+    </div> <!-- End objective holder-->
+    
+    <!-- Objective Button - Click to Add -->
+    <div id='obj-button'>
+        <input type="button" value='Click to Add' id='objective-button'/>
     </div>
     
     <br><br>
+
+    <!-- Submit Goal with Objectives Button -->
     <div>
         <label>
         <input type='submit' value="Submit Goal and Objectives" required/>
@@ -56,5 +57,5 @@
     </div>
     </form>
 </div>
-    
+</div>
 {% endblock %}
