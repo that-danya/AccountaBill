@@ -72,7 +72,7 @@ class Objective(db.Model):
     message_id = db.Column(db.Integer, db.ForeignKey('messages.message_id'))
     img_url = db.Column(db.String(100))
 
-    # est relationship with User
+    # est relationships
     goal = db.relationship('Goal', backref='objective')
     message = db.relationship('Message', backref='objective')
 

@@ -7,14 +7,14 @@
   {% if user.goal %}
 
     <h2>Goal</h2>
-    <ul>
-    {% for g in user.goal %}
-      <li>
-        <ul> PRINT GOAL HERE
-            {% for o in user.objective %}
-            &nbsp;&nbsp;&nbsp;&nbsp; PRINT OBJECTIVE HERE, DUE HERE
+    <ul style="list-style-type:none">
+      {% for g in user.goal %}
+    <li>{{ g.goal_text }}</li>
+        <ul>
+            {% for objective in g.objective %}
+            <li>{{ objective.obj_text }}</li>
             {% endfor %}
-      </li>
+        </ul>
     {% endfor %}
     </ul>
   {% endif %}
