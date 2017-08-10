@@ -20,20 +20,28 @@
         var objAction = $('<input>').attr({'class': 'objective',
                                            'type': 'text',
                                            'value': 'do',
+                                           'name': 'obj-action' + totalObj,
                                            'id': 'obj-action' + totalObj,
                                            'required' : ''});
+        console.log(objAction.name);
         var objNoun = $('<input>').attr({'class': 'objective',
                                          'type': 'text',
                                          'id': 'obj-noun' + totalObj,
                                          'value': 'something',
+                                         'name': 'obj-noun' + totalObj,
                                          'required' : ''});
+        console.log(objNoun.name);
         var objCheck = $('<input>').attr({'class': 'objective',
                                           'type': 'checkbox',
-                                          'id': 'obj-noun' + totalObj});
+                                          'name': 'obj-check' + totalObj,
+                                          'id': 'obj-check' + totalObj});
+        console.log(objCheck.name);
         var objDate = $('<input>').attr({'class': 'objective',
                                          'type': 'date',
-                                         'id': 'obj-noun' + totalObj,
+                                         'name': 'obj-date' + totalObj,
+                                         'id': 'obj-date' + totalObj,
                                          'required' : ''});
+        console.log(objDate.name);
         
         objDiv.append('I will ');
         objDiv.append(objAction);
@@ -49,72 +57,4 @@
         // append div to end of parent
         parentDiv.append(objDiv);
 
-        // // more var
-        // var contentAttributes
-        // var objNum = totalObj;
-
-        // contentAttributes = {
-        //     'type': 'text',
-        //     'name': 'objective' + objNum
-        //     // 'value': 'do/something/date'
-        // };
-        // contentAttributes.attr()
-
-
     });
-// $('#objective-button').on('click', function() {
-//     console.log('yay!');
-// });
-
-
-// // counter variable
-// var totalObjective = 0;
-// // on click, run function
-// $(document).on('click', '.objective-button', function() {
-//     console.log('YAY!')
-//     // increment counter
-//     var objectNum = totalObjective + 1;
-//     // set variable for what is being created
-//     var createDiv = $(document.createElement('div'));
-//         // set variable for total num of objective elements
-//         // var objTotalField = $('#obj-num-total');
-//         // var totalObj = Number(objTotalField.val() + 1);
-//     // var for id tag, add to div
-//     var objId = 'objective' + objectNum;
-//     createDiv.attr('id', objId);
-//     // insert html for div
-//     createDiv.html("<label>Objective:<br>" + "
-//         <span>I will <input type='text' name='obj-action" + objectNum +"' required value='do'/>" + " 
-//         <input type='text' name='obj-noun" + objectNum +"' required value='something'/>" + " 
-//         (Daily? Check the box.)" + "
-//         <input type='checkbox' name='daily" + objectNum +"' checked value='yes_daily'/>" + "<br>" + "
-//         I will accomplish this by: <input type='date' name='obj-date" + objectNum +"' required min='2017-08-07'/></span>" + "
-//         <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->" + "
-//     </label>
-//     ");
- 
-
-
-//     contentAttributes = {
-//     'type': 'text',
-//     'name': 'objective' + objectNum
-//     // 'value': 'do/something/date'
-//     };
-
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

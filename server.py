@@ -121,26 +121,71 @@ def user_page(user_id):
 ## TODO 'BUY' page or Get more points page
 
 
-@app.route('/define_goal', methods=['GET'])
+@app.route('/goal', methods=['GET'])
 def goal_form():
     """Show goal form."""
 
     return render_template('goal.html')
 
-# @app.route('/definte_goal' methods=['POST'])
-# def render_goal():
-#     """Process goal data"""
 
-#     # Start DB transaction by assigning variables to Goal class
-#     new_goal = Goal(user=user, goal=goal, complete=complete)
+@app.route('/define_goal', methods=['POST'])
+def render_goal():
+    """Process goal data"""
 
-#     # assign variables to Objective class
+    # est user_id to instantiate Goal/Objectives
+    user = session['user_id']
+
+    # goal form data set to variables
+    goal_do = request.form.get('goal-action')
+    goal_something = request.form.get('goal-noun')
+    goal_date = request.form.get('goal-date')
+    complete = False
+
+    # concat goal_text
+    goal_text = 'I will ' + goal_do + " " + goal_something + " by " + goal_date
+
+    # Start DB transaction by assigning variables to Goal class
+    new_goal = Goal(user_id=user, goal_text=goal_text, complete=complete)
+    # Commit goal
+    db.session.add(new_goal)
+    # db.session.commit()
+    # define total num of objective rows
+    total_objs = request.form.get('objCounter')
+
+    for i in range(1, len(total_objs) + 1):
+        i = str(i)
+
+        # assign data from from to variables, incremented
+        do = request.form.get('obj-action' + i)
+        something = request.form.get('obj-noun' + i)
+        daily = request.form.get('obj-check' + i)
+        date = request.form.get('obj-date' + i)
+        complete = False
+        points = 0
+
+        # concat obj_text
+        new_obj_text = 'I will' + do + something + 'by' + date
+        if daily:
+            new_obj_text += ', daily.'
+        else:
+            new_obj_text += '.'
+
+        # Start DB transactoin for new Obj
+        new_objective = Objective(goal_id=new_goal.goal_id,
+                                  obj_text=new_obj_text,
+                                  due_date=date,
+                                  complete=complete,
+                                  point_cost=points)
 
 
-#     db.session.add(new_goal, new_objective)
-#     db.session.commit()
+    ## TODO: Need to do math for daily
 
-#     return redirect('/set_objective', )
+    # DB interaction
+        db.session.add(new_objective)
+    db.session.commit()
+
+    flash('Your goal was submitted!')
+    return redirect('/user/%s' % user)
 
 
 ####################################################################
