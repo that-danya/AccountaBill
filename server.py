@@ -152,16 +152,9 @@ def render_goal():
     db.session.add(new_goal)
     db.session.commit()
     # define total num of objective rows
-    total_objs = request.form.get('objCounter')
-    print " "
-    print " "
-    print " "
-    print len(total_objs)
-    print " "
-    print " "
+    total_objs = int(request.form.get('objCounter'))
 
-
-    for i in range(1, (int(total_objs) + 1)):
+    for i in range(1, (total_objs) + 1):
         i = str(i)
 
         # assign data from from to variables, incremented
@@ -171,7 +164,7 @@ def render_goal():
         daily = request.form.get('obj-check' + i)
         date = request.form.get('obj-date' + i)
         complete = False
-        points = 0
+        points = float(request.form.get('goal-points'))/total_objs
 
         # concat obj_text
         new_obj_text = 'I will ' + str(do) + " " + str(something) + ' by ' + str(date)
