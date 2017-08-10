@@ -46,6 +46,7 @@ class Goal(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     goal_text = db.Column(db.String(100), nullable=False)
     complete = db.Column(db.Boolean)
+    active = db.Column(db.Boolean)
 
     # est relationship with User
     user = db.relationship('User', backref='goal')
