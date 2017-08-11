@@ -147,7 +147,7 @@ def render_goal():
     goal_text = 'I want to ' + goal_do + " " + goal_something + " by " + str(goal_date)
 
     # Start DB transaction by assigning variables to Goal class
-    new_goal = Goal(user_id=user, goal_text=goal_text, complete=complete, active=active)
+    new_goal = Goal(user_id=user, goal_text=goal_text, complete=complete)
     # Commit goal
     db.session.add(new_goal)
     db.session.commit()
@@ -164,7 +164,8 @@ def render_goal():
         daily = request.form.get('obj-check' + i)
         date = request.form.get('obj-date' + i)
         complete = False
-        points = float(request.form.get('goal-points'))/total_objs
+        cost = int(request.form.get('goal-points'))
+        points = float(cost)/total_objs
 
         # concat obj_text
         new_obj_text = 'I will ' + str(do) + " " + str(something) + ' by ' + str(date)
@@ -180,14 +181,15 @@ def render_goal():
                                   complete=complete,
                                   point_cost=points)
 
-        print 'loop'
-
-
     ## TODO: Need to do math for daily
 
     # DB interaction
         db.session.add(new_objective)
-        db.session.commit()
+    this_user = User.query.get(user)
+    this_user.points = this_user.points - cost
+    db.session.commit()
+
+
 
     flash('Your goal was submitted!')
     return redirect('/user/%s' % user)
