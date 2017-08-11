@@ -189,8 +189,6 @@ def render_goal():
     this_user.points = this_user.points - cost
     db.session.commit()
 
-
-
     flash('Your goal was submitted!')
     return redirect('/user/%s' % user)
 
