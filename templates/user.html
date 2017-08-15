@@ -26,51 +26,10 @@
   </div> <!-- END to-complete-goals DIV-->
   
   <!-- submit button here -->
-  <div><input type='submit' value="Update Me!" required/></div>
+  <div><input type='submit' value="Update Me!" id='update-objective-button' required/></div>
   </form>
-  
-
 
 </div> <!-- END MAIN DIV-->
-___________________________________________
-  
-___________________________________________
-  
-  {% if user.goal %}
-  <h2>Goals completed:</h2>
-    {% for g in user.goal %}  
-      {% if g.complete %}
-        <ul style="list-style-type:none">
-          <li>{{ g.goal_text }}</li>
-            <ul>
-              {% for objective in g.objective %}
-              <li>
-                <input type='checkbox' checked deactivate>
-                {{ objective.obj_text }}
-              </li>
-              {% endfor %}
-            </ul>
-        </ul>
-    {% endif %}
-    {% endfor %}
 
-      <form action='/update-obj' method="POST" id='update-obj-form'>
-      <h2>Goals to complete:</h2>
-        {% for g in user.goal %}  
-          {% if not g.complete %}
-      <ul style="list-style-type:none">
-        <li>{{ g.goal_text }}</li>
-            <ul style="list-style-type:none">
-                {% for objective in g.objective %}
-                {% set obj_id = 'obj' + objective.obj_id|string %}
-                <li><input type='checkbox' name='obj_id'+ objective.obj_id|string)>
-                    {{ objective.obj_text }}</li>
-                {% endfor %}
-            </ul>
-      </ul>
-      {% endif %}
-      {% endfor %}
-    <input type='submit' value="Update my objectives!" required/>
-  {% endif %}
 
 {% endblock %}

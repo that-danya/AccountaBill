@@ -223,25 +223,20 @@ def get_obj_info(user_id):
     else:
         return redirect('/user/%s' % user_id)
 
-# @app.route('/user-obj', methods={'GET'})
-# def user_objectives():
 
-#     user_objectives = Objective.query.get
+@app.route('/user/update.json', methods=['POST'])
+def update_objective():
+    """Update objection completion in database."""
 
-# @app.route('/update-obj', methods=['POST'])
-# def update_obj_completion():
+    obj_id = request.form.get('obj_id')
+    completed = request.form.get('complete')
 
-#     this_obj = request.form.get()
+    objective = Objective.query.get(obj_id)
+    objective.complete = completed
 
-#     this_obj = Objective.form.get('this_obj')
+    db.session.commit()
+    return jsonify(objective.serialize), 200
 
-#     # db updating objective to True
-#     this_obj = Objective.query.get(this_obj)
-
-#     # obj_update = 
-
-#     this_obj.complete = True
-#     db.session.commit()
 
 
 ####################################################################

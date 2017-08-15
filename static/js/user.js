@@ -5,10 +5,10 @@
         // for objective in goal.objective:
             // if not objective.complete:
 
-                // insert checkbox with id of 'obj'+obj_id
+                // insert radio with id of 'obj'+obj_id
                 // objective.obj_text
             // else:
-                // disabled, checked checkbox
+                // disabled, checked radio
                 // objective.obj_text
                 // add class = 'completed-obj'
     // else:
@@ -16,13 +16,12 @@
         // ? add how much earned back
 
 ////////////////////////////////////////////
-
-
+var user = $('#user-id').html();
 
 document.addEventListener('DOMContentLoaded', function() {
     var parentDiv = $('#to-complete-goals');
     
-    var user = $('#user-id').html();
+    // var user = $('#user-id').html();
 
     // get user page, json data
     $.get('/user/'+ user +'.json', function(results){
@@ -40,19 +39,29 @@ document.addEventListener('DOMContentLoaded', function() {
             parentDiv.append(goalDiv);
         };
 
-        // loop over objectives, + append div to goalDiv
+        // loop over object-objs_dict to get keys
         for (var objs of Object.keys(objs_dict)) {
             var goal_id = objs // this gives back goal num
-            var obj_array = objs_dict[objs]; // this gives back obj object
+            var obj_array = objs_dict[objs]; // this gives back objective array
             
-            // create Div
+            // loop over each set of data in the obj_array
             for (var item of obj_array) {
-                console.log(item.obj_text);
+                
+                // create elements with corresponding objective id
                 var objDiv = $('<div>').attr({'class': 'objective',
                                               'id': 'objDiv' + item.obj_id});
-                objDiv.html(item.obj_text);
+                var radio = $('<input>').attr({'type': 'radio',
+                                                 'name': 'objRadio',
+                                                 'value': item.obj_id,
+                                                 'id': 'objRadio' + item.obj_id});
+                // add radio to objective div
+                objDiv.html(radio);
+                // append the text of the objective
+                objDiv.append(item.obj_text);
+                // append that div to the corresponding goaldiv
                 var newDiv = $('#goalDiv' + goal_id);
                 newDiv.append(objDiv);
+                // append it to the main div
                 parentDiv.append(newDiv);
             };
         };
@@ -62,6 +71,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }, false);
 
+function updateObjective(evt) {
+    evt.preventDefault();
+
+    var formInputs = {
+        'obj_id': $('form input[type=radio]:checked').val(),
+        'complete': 'True',
+    };
+
+    $.post('/user/update.json',
+           formInputs,
+           function(result){
+           console.log(result);
+           alert('Your objective has been updated. Congrats!');
+           });
+}
+
+$('#update-objective-button').on('click', updateObjective);
 
 // function getObjText
 
