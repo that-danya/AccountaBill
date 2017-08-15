@@ -15,58 +15,13 @@
         // put goal in Completed Goals section with corresponding objectives.
         // ? add how much earned back
 
-
-// on window load
-
-
-// pipe in var continaing total obj connected to user
-
-
-// $(window).load(function(){
-//     var userObjTotal = 
-
-//     $.get('/user/<int:user_id>.json', function(){
-
-
-//     for (var i=0; i<=range(1, userObjTotal); i++){
-//         var objectiveDiv = $('#to-complete-goals');
-//         // TODO add in value="obj_text"
-//         objectiveDiv.append("<input type='checkbox' id='obj"+i+"'>");
-//         objectiveDiv.append(value=USER_OBJECTIVE_HERE);
-//     };
-
-//     });
-// });
-
 ////////////////////////////////////////////
 
 
 
 document.addEventListener('DOMContentLoaded', function() {
     var parentDiv = $('#to-complete-goals');
-    parentDiv.append('made it!');
     
-    // // create div to append
-    // var objDiv = $('<div>').attr({'class': 'objective',
-    //                               'id': 'objective' + OBJIDNEEDED,
-    // });
-    // // checkbox to append
-    // var objDivBox = $('<input>').attr({'class': 'objective', 
-    //                                    'type': 'checkbox'
-    //                                    'name': 'objective-box' + OBJIDNEEDED, 
-    //                                    'id': 'objective-box' + OBJIDNEEDED
-    // });
-    // var objText = $('<div>').attr({'value': 'TEXTGOESHERE',
-    //                                'id':
-
-    // });
-
-    // objDiv.append(objDivBox);
-    // objDiv.append(objText);
-
-    // // append to parent
-    // parentDiv.append(objDiv);
-
     var user = $('#user-id').html();
 
     // get user page, json data
@@ -87,19 +42,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // loop over objectives, + append div to goalDiv
         for (var objs of Object.keys(objs_dict)) {
-            console.log(objs) // this gives back goal num
-            var obj_objects = objs_dict[objs]; // this gives back obj object
-            for (var obj_keys of Object.keys(obj_objects)) {
-                console.log(obj_keys);
-            };
-
+            var goal_id = objs // this gives back goal num
+            var obj_array = objs_dict[objs]; // this gives back obj object
+            
             // create Div
-            var objDiv = $('<div>').attr({'class': 'objective',
-                                  'id': 'objDiv' + objs.obj_id,
-            });
-            // console.log(objs.obj_id); this is undefined
-            objDiv.html(objs.obj_text);
-            parentDiv.append(objDiv);
+            for (var item of obj_array) {
+                console.log(item.obj_text);
+                var objDiv = $('<div>').attr({'class': 'objective',
+                                              'id': 'objDiv' + item.obj_id});
+                objDiv.html(item.obj_text);
+                var newDiv = $('#goalDiv' + goal_id);
+                newDiv.append(objDiv);
+                parentDiv.append(newDiv);
+            };
         };
 
     });
@@ -107,12 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }, false);
 
-
-// $(window).load(function(){
-//     function getObjId(results) {
-//         console.log('objectives');
-//     }
-// });
 
 // function getObjText
 
