@@ -54,6 +54,19 @@ class Goal(db.Model):
 
         return "<Goal goal_id=%s complete=%s>" % (self.goal_id, self.complete)
 
+    @property
+    def serialize(self):
+        """Return dictionary of data in class."""
+
+        data = {
+            'goal_id': self.goal_id,
+            'user_id': self.user_id,
+            'goal_text': self.goal_text,
+            'complete': self.complete,
+        }
+
+        return data
+
 
 class Objective(db.Model):
     """Objectives connected to goals of user with duedates."""
@@ -79,6 +92,23 @@ class Objective(db.Model):
         """Provide helpful representation when printed"""
 
         return "<Objective obj_id=%s complete=%s>" % (self.obj_id, self.complete)
+
+    @property
+    def serialize(self):
+        """Return dictionary of data in class."""
+
+        data = {
+            "obj_id": self.obj_id,
+            "goal_id": self.goal_id,
+            "obj_text": self.obj_text,
+            "due_date": self.due_date.isoformat(),
+            "complete": self.complete,
+            "point_cost": self.point_cost,
+            "message_id": self.message_id,
+            "img_url": self.img_url,
+        }
+
+        return data
 
 
 class Message(db.Model):

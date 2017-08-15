@@ -1,6 +1,7 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session
+import json
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Goal, Objective, Message
@@ -191,6 +192,56 @@ def render_goal():
 
     flash('Your goal was submitted!')
     return redirect('/user/%s' % user)
+
+
+######## WIP
+
+@app.route('/user/<int:user_id>.json')
+def get_obj_info(user_id):
+    """Get objective info."""
+
+    if True: #session['user_id'] == user_id:
+        # Query db for all goals for user
+        goal_data = Goal.query.filter_by(user_id=user_id).all()
+
+        # create empty dictionary
+        objective_dict = {}
+        # serialize goals - for json at end of process
+        goals = [goal.serialize for goal in goal_data]
+        # for every item in goals, query db for objectives
+        # put all obj corresponding to a goal in one list
+        for g in goal_data:
+
+            obj_data = Objective.query.filter_by(goal_id=g.goal_id).all()
+            objective_dict[g.goal_id] = [obj.serialize for obj in obj_data]
+
+        # put into dict to be jsonified
+        results = {'goals': goals, 'objectives': objective_dict}
+
+        return jsonify(results)
+
+    else:
+        return redirect('/user/%s' % user_id)
+
+# @app.route('/user-obj', methods={'GET'})
+# def user_objectives():
+
+#     user_objectives = Objective.query.get
+
+# @app.route('/update-obj', methods=['POST'])
+# def update_obj_completion():
+
+#     this_obj = request.form.get()
+
+#     this_obj = Objective.form.get('this_obj')
+
+#     # db updating objective to True
+#     this_obj = Objective.query.get(this_obj)
+
+#     # obj_update = 
+
+#     this_obj.complete = True
+#     db.session.commit()
 
 
 ####################################################################

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block script_for_page %}
     <script
-  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
     <script src="/static/js/user.js"></script>
@@ -11,7 +11,7 @@
 {% block content %}
 <div class='maindiv'>
   <div id='user-heading'>
-    <h1>{{ user.email }} ({{ user.user_id }})</h1>
+    <h1>{{ user.email }} (<span id='user-id'>{{ user.user_id }}</span>)</h1>
     <h3>Points available: {{ user.points }}</h3>
   </div><!-- END USER HEADING -->
 
@@ -19,42 +19,58 @@
     <h2>Goals completed:</h2>
   </div> <!-- END completed-goals DIV-->
   
+  <form action='/user' method='POST' id='user-goal-update'>
   <div id='to-complete-goals'>
     <h2>Goals to complete:</h2>
-  </div> <!-- END completed-goals DIV-->
+
+  </div> <!-- END to-complete-goals DIV-->
+  
+  <!-- submit button here -->
+  <div><input type='submit' value="Update Me!" required/></div>
+  </form>
+  
 
 
 </div> <!-- END MAIN DIV-->
 ___________________________________________
+  
+___________________________________________
+  
   {% if user.goal %}
-    <h2>Goals completed:</h2>
-        {% for g in user.goal %}  
-          {% if g.complete %}
-      <ul style="list-style-type:none">
-        <li>{{ g.goal_text }}</li>
+  <h2>Goals completed:</h2>
+    {% for g in user.goal %}  
+      {% if g.complete %}
+        <ul style="list-style-type:none">
+          <li>{{ g.goal_text }}</li>
             <ul>
-                {% for objective in g.objective %}
-                <li>{{ objective.obj_text }}</li>
-                {% endfor %}
+              {% for objective in g.objective %}
+              <li>
+                <input type='checkbox' checked deactivate>
+                {{ objective.obj_text }}
+              </li>
+              {% endfor %}
             </ul>
-      </ul>
-      {% endif %}
-      {% endfor %}
+        </ul>
+    {% endif %}
+    {% endfor %}
 
+      <form action='/update-obj' method="POST" id='update-obj-form'>
       <h2>Goals to complete:</h2>
         {% for g in user.goal %}  
           {% if not g.complete %}
       <ul style="list-style-type:none">
         <li>{{ g.goal_text }}</li>
-            <ul>
+            <ul style="list-style-type:none">
                 {% for objective in g.objective %}
-                <li>{{ objective.obj_text }}</li>
+                {% set obj_id = 'obj' + objective.obj_id|string %}
+                <li><input type='checkbox' name='obj_id'+ objective.obj_id|string)>
+                    {{ objective.obj_text }}</li>
                 {% endfor %}
             </ul>
       </ul>
       {% endif %}
       {% endfor %}
- 
+    <input type='submit' value="Update my objectives!" required/>
   {% endif %}
 
 {% endblock %}
