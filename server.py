@@ -238,7 +238,6 @@ def update_objective():
 
     objective.goal.user.points = objective.goal.user.points + obj_cost
 
-
     db.session.commit()
     return jsonify(objective.serialize), 200
 

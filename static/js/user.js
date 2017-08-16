@@ -20,6 +20,7 @@ var user = $('#user-id').html();
 
 document.addEventListener('DOMContentLoaded', function() {
     var parentDiv = $('#to-complete-goals');
+    var parentDivComplete = $('#completed-goals');
     
     // var user = $('#user-id').html();
 
@@ -36,12 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                   'id': 'goalDiv' + goal.goal_id,
             });
             goalDiv.html(goal.goal_text);
-            parentDiv.append(goalDiv);
+            // if goal not complete, append div to parent,
+            // else append to parentComplete
+            if (goal.complete === false) {
+                parentDiv.append(goalDiv);
+            } else {
+                parentDivComplete.append(goalDiv);
+            }
+
         };
 
         // loop over object-objs_dict to get keys
         for (var objs of Object.keys(objs_dict)) {
-            var goal_id = objs // this gives back goal num
+            var goal_id = objs; // this gives back goal num
+
             var obj_array = objs_dict[objs]; // this gives back objective array
             
             // loop over each set of data in the obj_array
@@ -71,8 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // append that div to the corresponding goaldiv
                 var newDiv = $('#goalDiv' + goal_id);
                 newDiv.append(objDiv);
-                // append it to the main div
-                parentDiv.append(newDiv);
             };
         };
 
@@ -95,7 +102,7 @@ function updateObjective(evt) {
            function(result){
            console.log(result);
            alert('Your objective has been updated. Congrats!');
-           //$('form input[type=radio]:checked').replaceWith('<input type="checkbox" class=objective checked disabled>');
+           $('form input[type=radio]:checked').replaceWith('<input type="checkbox" class=objective checked disabled>');
            });
 }
 
