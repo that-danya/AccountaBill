@@ -54,8 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
                                                  'name': 'objRadio',
                                                  'value': item.obj_id,
                                                  'id': 'objRadio' + item.obj_id});
+                var checkbox = $('<input>').attr({'type': 'checkbox',
+                                             'name': 'objCheck',
+                                             'value': item.obj_id,
+                                             'id': 'objCheck' + item.obj_id,
+                                             'checked': 'checked',
+                                             'disabled': 'disabled'});
                 // add radio to objective div
-                objDiv.html(radio);
+                if (item.complete === true) {
+                    objDiv.html(checkbox);
+                } else {
+                    objDiv.html(radio);
+                }
                 // append the text of the objective
                 objDiv.append(item.obj_text);
                 // append that div to the corresponding goaldiv
@@ -85,6 +95,7 @@ function updateObjective(evt) {
            function(result){
            console.log(result);
            alert('Your objective has been updated. Congrats!');
+           //$('form input[type=radio]:checked').replaceWith('<input type="checkbox" class=objective checked disabled>');
            });
 }
 

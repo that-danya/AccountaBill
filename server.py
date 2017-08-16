@@ -235,7 +235,7 @@ def update_objective():
     objective = Objective.query.get(obj_id)
     objective.complete = completed
     obj_cost = objective.point_cost
- 
+
     objective.goal.user.points = objective.goal.user.points + obj_cost
 
 
