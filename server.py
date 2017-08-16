@@ -230,9 +230,14 @@ def update_objective():
 
     obj_id = request.form.get('obj_id')
     completed = request.form.get('complete')
+    user = request.form.get('user_id')
 
     objective = Objective.query.get(obj_id)
     objective.complete = completed
+    obj_cost = objective.point_cost
+ 
+    objective.goal.user.points = objective.goal.user.points + obj_cost
+
 
     db.session.commit()
     return jsonify(objective.serialize), 200

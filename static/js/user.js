@@ -77,6 +77,7 @@ function updateObjective(evt) {
     var formInputs = {
         'obj_id': $('form input[type=radio]:checked').val(),
         'complete': 'True',
+        'user_id': user,
     };
 
     $.post('/user/update.json',
