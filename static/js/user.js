@@ -1,28 +1,12 @@
 'use strict';
 
-// for each goal in user.goal
-    // if not goal.complete:
-        // for objective in goal.objective:
-            // if not objective.complete:
-
-                // insert radio with id of 'obj'+obj_id
-                // objective.obj_text
-            // else:
-                // disabled, checked radio
-                // objective.obj_text
-                // add class = 'completed-obj'
-    // else:
-        // put goal in Completed Goals section with corresponding objectives.
-        // ? add how much earned back
-
-////////////////////////////////////////////
+// declare global user variable
 var user = $('#user-id').html();
 
 document.addEventListener('DOMContentLoaded', function() {
+    // name parent divs
     var parentDiv = $('#to-complete-goals');
     var parentDivComplete = $('#completed-goals');
-    
-    // var user = $('#user-id').html();
 
     // get user page, json data
     $.get('/user/'+ user +'.json', function(results){
@@ -49,10 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // loop over object-objs_dict to get keys
         for (var objs of Object.keys(objs_dict)) {
-            var goal_id = objs; // this gives back goal num
-
-            var obj_array = objs_dict[objs]; // this gives back objective array
-            
+            // name variable that gives back goal num
+            var goal_id = objs; 
+            // name var that gives back objective array
+            var obj_array = objs_dict[objs];
             // loop over each set of data in the obj_array
             for (var item of obj_array) {
                 
@@ -62,14 +46,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 var radio = $('<input>').attr({'type': 'radio',
                                                  'name': 'objRadio',
                                                  'value': item.obj_id,
+                                                 'class': 'to-complete',
                                                  'id': 'objRadio' + item.obj_id});
                 var checkbox = $('<input>').attr({'type': 'checkbox',
                                              'name': 'objCheck',
                                              'value': item.obj_id,
                                              'id': 'objCheck' + item.obj_id,
                                              'checked': 'checked',
+                                             'class': 'completed',
                                              'disabled': 'disabled'});
-                // add radio to objective div
+                // add radio to objective div if false, else checkbox
                 if (item.complete === true) {
                     objDiv.html(checkbox);
                 } else {
@@ -77,65 +63,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 // append the text of the objective
                 objDiv.append(item.obj_text);
-                // append that div to the corresponding goaldiv
+                // append to the corresponding goaldiv
                 var newDiv = $('#goalDiv-' + goal_id);
                 newDiv.append(objDiv);
-            };
-        };
-
-    });
-
+            }; // end for loop for every item in array
+        }; // end for loop for keys
+    }); // end get request
 
 }, false);
 
-function updateData (evt) {
+// this function updates objective and calls update goal when all objs completed
+function updateObjective(evt) {
     evt.preventDefault();
-    updateObjective();
-    updateGoal();
-}
 
-function updateObjective() {
-    var self = $('form input[type=radio]:checked');
-
+    // package up data
     var formInputs = {
         'obj_id': $('form input[type=radio]:checked').val(),
         'complete': 'True',
         'user_id': user,
     };
 
-    $.post('/user/update.json',
-           formInputs,
-           function(result){
-           console.log(result);
-           alert('Your objective has been updated. Congrats!');
-           $('form input[type=radio]:checked').replaceWith('<input type="checkbox" class=objective checked disabled>');
-           });
+    // post request to update obj
+    $.post('/user/obj/update.json',
+            formInputs,
+            function(result) {
+                console.log(result);
+                alert('Your objective has been updated. Congrats!');
+                // replace radio with checkbox, add to completed class
+                $('form input[type=radio]:checked').replaceWith('<input type="checkbox" class="objective completed" checked disabled>');
+                // for ui, change color of text
+                $("#to-complete-goals .goal:not(:has(input[type=radio]))").css('color', '#e7efd2');
+                // if a goaldiv has no radio buttons, call updateGoal with goal id passed in
+                if ($('#goalDiv-' + result.goal_id).find(':radio').length === 0) {
+                    updateGoal(result.goal_id);
+                } // end if
+    }); // end post
+} // end updateObjective function
 
-    $("#to-complete-goals .goal:not(:has(input[type=radio]))").addClass('completed').css('color', 'gray');
-
-}
-
-function updateGoal(){
-
+// this function updates goal
+function updateGoal(goal_id) {
+    
+    // package up data
     var formInputs = {
-        'goal_id': $('.completed').attr('id').split('-')[1],
+        'goal_id': goal_id,
         'complete': 'True',
         'user_id': user,
     };
 
+    // post request to update goal
     $.post('/user/goal/update.json',
         formInputs,
         function(result) {
-        alert('Congrats, you completed your goal!');
+            console.log(result);
+            alert('Congrats, you completed your goal!');
         });
 
-    $("#to-complete-goals .goal:not(:has(input[type=radio]))").addClass('completed').css('color', 'gray');
-}
+} // end updateGoal function
 
-$('#update-objective-button').on('click', updateData);
+// event listener on update button
+$('#update-objective-button').on('click', updateObjective);
 
-// function getObjText
-
-// function getGoalId
-
-// function getGoalText

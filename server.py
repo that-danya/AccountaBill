@@ -142,7 +142,6 @@ def render_goal():
     goal_something = request.form.get('goal-noun')
     goal_date = request.form.get('goal-date')
     complete = False
-    active = False
 
     # concat goal_text
     goal_text = 'I want to ' + goal_do + " " + goal_something + " by " + str(goal_date)
@@ -186,6 +185,7 @@ def render_goal():
 
     # DB interaction
         db.session.add(new_objective)
+
     this_user = User.query.get(user)
     this_user.points = this_user.points - cost
     db.session.commit()
@@ -224,7 +224,7 @@ def get_obj_info(user_id):
         return redirect('/user/%s' % user_id)
 
 
-@app.route('/user/update.json', methods=['POST'])
+@app.route('/user/obj/update.json', methods=['POST'])
 def update_objective():
     """Update objection completion in database."""
 
@@ -255,9 +255,6 @@ def update_goal():
 
     db.session.commit()
     return jsonify(goal.serialize), 200
-
-
-
 
 
 ####################################################################
