@@ -242,6 +242,23 @@ def update_objective():
     return jsonify(objective.serialize), 200
 
 
+@app.route('/user/goal/update.json', methods=['POST'])
+def update_goal():
+    """Update goal completion in database."""
+
+    goal_id = request.form.get('goal_id')
+    completed = request.form.get('complete')
+    user = request.form.get('user_id')
+
+    goal = Goal.query.get(goal_id)
+    goal.complete = completed
+
+    db.session.commit()
+    return jsonify(goal.serialize), 200
+
+
+
+
 
 ####################################################################
 # Helper Functions

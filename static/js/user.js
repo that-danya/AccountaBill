@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (var goal of goals) {
             // create div to append
             var goalDiv = $('<div>').attr({'class': 'goal',
-                                  'id': 'goalDiv' + goal.goal_id,
+                                  'id': 'goalDiv-' + goal.goal_id,
             });
             goalDiv.html(goal.goal_text);
             // if goal not complete, append div to parent,
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // append the text of the objective
                 objDiv.append(item.obj_text);
                 // append that div to the corresponding goaldiv
-                var newDiv = $('#goalDiv' + goal_id);
+                var newDiv = $('#goalDiv-' + goal_id);
                 newDiv.append(objDiv);
             };
         };
@@ -88,8 +88,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }, false);
 
-function updateObjective(evt) {
+function updateData (evt) {
     evt.preventDefault();
+    updateObjective();
+    updateGoal();
+}
+
+function updateObjective() {
+    var self = $('form input[type=radio]:checked');
 
     var formInputs = {
         'obj_id': $('form input[type=radio]:checked').val(),
@@ -104,9 +110,29 @@ function updateObjective(evt) {
            alert('Your objective has been updated. Congrats!');
            $('form input[type=radio]:checked').replaceWith('<input type="checkbox" class=objective checked disabled>');
            });
+
+    $("#to-complete-goals .goal:not(:has(input[type=radio]))").addClass('completed').css('color', 'gray');
+
 }
 
-$('#update-objective-button').on('click', updateObjective);
+function updateGoal(){
+
+    var formInputs = {
+        'goal_id': $('.completed').attr('id').split('-')[1],
+        'complete': 'True',
+        'user_id': user,
+    };
+
+    $.post('/user/goal/update.json',
+        formInputs,
+        function(result) {
+        alert('Congrats, you completed your goal!');
+        });
+
+    $("#to-complete-goals .goal:not(:has(input[type=radio]))").addClass('completed').css('color', 'gray');
+}
+
+$('#update-objective-button').on('click', updateData);
 
 // function getObjText
 
