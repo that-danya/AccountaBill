@@ -33,12 +33,13 @@
             <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->
             <br>
             This goal is worth
-            <input type'number' name='goal-points' value=10 required/> points.
+            <input type='number' name='goal-points' value={{points}} min='1' max={{points}} required/> points.
         </label>
     </div><br> <!-- End goal div-->
 
-    <!--  HIDDEN FIELD - Counter -->
+    <!--  HIDDEN FIELD - Counter, Points -->
     <input name='objCounter' id='obj-counter' value='0' type='number' hidden>
+    <input name='points' id='points' value={{points}} type='number' hidden>
     
     <!-- *** Objectives ***-->
     <div id='objective-holder'>
@@ -49,7 +50,7 @@
     <div id='obj-button'>
         <input type="button" value='Click to Add' id='objective-button'/>
     </div>
-    
+
     <br><br>
 
     <!-- Submit Goal with Objectives Button -->

@@ -1,6 +1,5 @@
 from jinja2 import StrictUndefined
 
-import json
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -9,7 +8,7 @@ from model import connect_to_db, db, User, Goal, Objective, Message
 app = Flask(__name__)
 
 # add key for debug
-app.secret_key = 'abc'
+app.secret_key = 'duuuuude. this is an app!!'
 
 # debugger please yell at me if I do something weird
 app.jinja_env.undefined = StrictUndefined
@@ -41,7 +40,7 @@ def process_login():
 
     # don't log in user if not a user name or password match
     if not user:
-        flash('No a valid user login.')
+        flash('Not a valid user login.')
         return redirect('/login')
     if user.password != password:
         flash('Incorrect password. Please try again.')
@@ -61,7 +60,7 @@ def process_login():
 def logout_user():
     """Logout user."""
 
-    # Remove cookie from session, signal to user action
+    # Remove cookie from session, signal to user
     del session['user_id']
     flash('You have been logged out.')
 
@@ -71,10 +70,6 @@ def logout_user():
 @app.route('/register', methods=['GET'])
 def register_form():
     """Show register form for user."""
-
-    ## TODO add hidden form that pipes these in
-    # email = request.form['email']
-    # password = request.form['password']
 
     return render_template('/register_form.html')
 
@@ -99,26 +94,25 @@ def register_process():
     db.session.commit()
 
     # Flash message confirming add, redirect to home
-    ## TODO Change this to redirect to userpage
     flash('User %s added.' % email)
     session['user_id'] = new_user.user_id
 
-    # redirect to user's page
-    return redirect('/user/%s' % new_user.user_id)
+    # redirect to goal page
+    return redirect('/goal')
 
-
-## TODO Need after registrant flow to direct to CREATE GOAL for first time tute
-#       that instantiates points with user
 
 @app.route('/user/<int:user_id>')
 def user_page(user_id):
     """Show user page."""
 
-    # get user id from db and set to user var
-    user = User.query.get(user_id)
+    if session['user_id'] != user_id:
+        return redirect('/user/%s' % session['user_id'])
+    else:
+        # get user id from db and set to user var
+        user = User.query.get(user_id)
 
-    # send user to user_page
-    return render_template('user.html', user=user)
+        # send user to user_page
+        return render_template('user.html', user=user)
 
 ## TODO 'BUY' page or Get more points page
 
@@ -127,7 +121,20 @@ def user_page(user_id):
 def goal_form():
     """Show goal form."""
 
-    return render_template('goal.html')
+    # if user is not signed in, redirect home
+    if not session['user_id']:
+        flash('You have not logged in yet!')
+        return redirect('/')
+
+    # if user has no points, redirect to user page
+    user = User.query.get(session['user_id'])
+    points = user.points
+    if points < 1:
+        flash('You do not have enough points to create a goal! Perhaps complete an objective first?')
+        return redirect('/user/%s' % session['user_id'])
+
+    # render goal page
+    return render_template('goal.html', points=points)
 
 
 @app.route('/define_goal', methods=['POST'])

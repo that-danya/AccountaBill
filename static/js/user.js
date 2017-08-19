@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // loop over object-objs_dict to get keys
         for (var objs of Object.keys(objs_dict)) {
             // name variable that gives back goal num
-            var goal_id = objs; 
+            var goal_id = objs;
             // name var that gives back objective array
             var obj_array = objs_dict[objs];
             // loop over each set of data in the obj_array

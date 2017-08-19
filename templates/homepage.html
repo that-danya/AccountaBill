@@ -4,21 +4,45 @@
 
 <h1>AccountaBill</h1>
 
-<h3>Would you like to sign up for an account?</h3>
-<form action='/register' method='GET'>
- <!--    <div>
-        <label>Email:
-            <input type='email' name='email' required>
-        </label>
+{% if "user_id" not in session %}
+    <div id='register-start'>
+        <h3>Would you like to sign up for an account?</h3>
+        <form action='/register' method='GET'>
+         <!--    <div>
+                <label>Email:
+                    <input type='email' name='email' required>
+                </label>
+            </div>
+            <div>
+                <label>Password:
+                    <input type='password' name='password' required>
+                </label>
+            </div> -->
+            <div>
+                <input type='submit' value='Register' required>
+            </div>
+        </form>
     </div>
-    <div>
-        <label>Password:
-            <input type='password' name='password' required>
-        </label>
-    </div> -->
-    <div>
-        <input type='submit' value='Register' required>
-    </div>
-</form>
+
+{% endif %}
+
+<div id='homepage-info'>
+    <h3>Be your own accountabillity partner!</h3>
+    <ul>
+        <li>Step 1: Create an account.</li>
+        <li>Step 2: Set a goal with reasonable objectives.
+            <ul>
+            <li>Identify how much you are willing to 'pay' yourself to complete it.</li>
+            <li>Set that money aside.</li>
+            <li>Everytime you complete an objective, you get part of that money back!</li>
+            </ul>
+        </li>
+        <li>Step 3: Make sure you check off when you complete an item!</li>
+        <a href="/goal">Get started here!</a>
+    </ul>
+</div>
+
+
+
 
 {% endblock %}
