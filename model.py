@@ -26,6 +26,7 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
     points = db.Column(db.Float, nullable=True)
+    text_confirm = db.Column(db.Boolean nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // append to the corresponding goaldiv
                 var newDiv = $('#goalDiv-' + goal_id);
                 newDiv.append(objDiv);
-            }; // end for loop for every item in array
-        }; // end for loop for keys
-    }); // end get request
+            }  // end for loop for every item in array
+        }  // end for loop for keys
+    });  // end get request
 
 }, false);
 

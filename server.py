@@ -1,9 +1,13 @@
 from jinja2 import StrictUndefined
 
+from datetime import datetime
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Goal, Objective, Message
+from twilio import twiml
+from twilio.rest import TwilioRestClient
+import os
 
 app = Flask(__name__)
 
@@ -12,6 +16,15 @@ app.secret_key = 'duuuuude. this is an app!!'
 
 # debugger please yell at me if I do something weird
 app.jinja_env.undefined = StrictUndefined
+
+client = TwilioRestClient(
+
+    a_sid=os.environ['ACCOUNT_SID'],
+    a_tok=os.environ['AUTH_TOKEN'])
+
+print api.VerifyCredentials()
+
+# client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 
 
 @app.route('/')
@@ -155,8 +168,10 @@ def render_goal():
 
     # Start DB transaction by assigning variables to Goal class
     new_goal = Goal(user_id=user, goal_text=goal_text, complete=complete)
+    new_text = 'Hi, I\'m Bill your new Accountabillity Buddy! Thanks for joining in! You created this goal "' + goal_text + '" I will text you the night of when your first objective is due. All you gotta do is reply \'YES\' if you completed it. I\'ll do the rest. Reply YES or NO to this message if you\'re on board.'
+    welcome_text = Message(message_text=new_text)
     # Commit goal
-    db.session.add(new_goal)
+    db.session.add_all([new_goal, welcome_text])
     db.session.commit()
     # define total num of objective rows
     total_objs = int(request.form.get('objCounter'))
@@ -171,43 +186,47 @@ def render_goal():
         daily = request.form.get('obj-check' + i)
         date = request.form.get('obj-date' + i)
         complete = False
-        cost = int(request.form.get('goal-points'))
-        points = float(cost)/total_objs
+        cost = float(request.form.get('goal-points'))
+        points = (cost)/total_objs
 
         # concat obj_text
-        new_obj_text = 'I will ' + str(do) + " " + str(something) + ' by ' + str(date)
+        new_obj_text = 'I will ' + str(do) + " " + str(something)
         if daily:
             new_obj_text += ', daily.'
         else:
             new_obj_text += '.'
+        # concat new_message
+        new_message_text = 'You said' + '"' + new_obj_text + '"' + 'Did you complete that task? If so, text back \'YES\''
 
-        # Start DB transactoin for new Obj
+        # Start DB transactoin for new Obj, Message, Text
         new_objective = Objective(goal_id=goal_id,
                                   obj_text=new_obj_text,
                                   due_date=date,
                                   complete=complete,
                                   point_cost=points)
 
+        new_message = Message(message_text=new_message_text)
+
     ## TODO: Need to do math for daily
 
     # DB interaction
         db.session.add(new_objective)
+        db.session.add(new_message)
 
     this_user = User.query.get(user)
     this_user.points = this_user.points - cost
+
     db.session.commit()
 
     flash('Your goal was submitted!')
     return redirect('/user/%s' % user)
 
 
-######## WIP
-
 @app.route('/user/<int:user_id>.json')
 def get_obj_info(user_id):
     """Get objective info."""
 
-    if True: #session['user_id'] == user_id:
+    if session['user_id'] == user_id:
         # Query db for all goals for user
         goal_data = Goal.query.filter_by(user_id=user_id).all()
 
@@ -262,6 +281,15 @@ def update_goal():
 
     db.session.commit()
     return jsonify(goal.serialize), 200
+
+@app.route('/')
+def get_messages():
+
+@app.route('/', methods='[POST]')
+def send_text():
+    """Send user a text using Twilio API."""
+
+
 
 
 ####################################################################
