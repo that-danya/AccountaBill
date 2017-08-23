@@ -1,0 +1,6 @@
+1|obj_reminder|Text back YES if you completed this objective today:
+2|ok_gotcha|Awesome, I have updated that for you in our database!
+3|welcome_text|Hi, I'm Bill your new Accountabillity Buddy! Thanks for joining in by creating a goal!! I will text you the night of when your first objective is due. All you gotta do is reply YES if you completed it. I'll do the rest. Reply YES or NO to this message if you're on board with recieving text messages.
+4|congrats_goal|Congrats, you completed a goal! What was the percentage of objectives you completed you ask? It was: 
+5|points_back|You earned back this many points:
+6|oops|Oops! I am not sure what you want me to do. Please log online to update your objective, check your points, or visit our FAQ's.

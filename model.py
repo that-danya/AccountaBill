@@ -25,8 +25,8 @@ class User(db.Model):
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
-    points = db.Column(db.Float, nullable=True)
-    text_confirm = db.Column(db.Boolean nullable=False)
+    points = db.Column(db.Float, nullable=True, default=10.0)
+    text_confirm = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -120,12 +120,13 @@ class Message(db.Model):
     message_id = db.Column(db.Integer,
                            autoincrement=True,
                            primary_key=True)
-    message_text = db.Column(db.String(100), nullable=False)
+    message_type = db.Column(db.String(15), nullable=False)
+    message_text = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed"""
 
-        return "<Message message_id=%s>" % (self.message_id)
+        return "<Message message_id=%s message_type=%s>" % (self.message_id, self.message_type)
 
 
 class Text(db.Model):

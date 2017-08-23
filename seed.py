@@ -64,13 +64,13 @@ def load_objectives():
     """Load objective from u.objective into database."""
 
     # for every row in file, strip and unpack
-    for i, row in enumerate(open('seed_data/u.objective')):
+    for i, row in enumerate(open('seed_data/u.objectives')):
         row = row.rstrip()
         obj_id, goal_id, obj_text, due_date, complete, point_cost, message_id = row.split('|')
 
         # declare objective
         objective = Objective(obj_id=obj_id,
-                              goal_id=obj_id,
+                              goal_id=goal_id,
                               obj_text=obj_text,
                               due_date=due_date,
                               complete=complete,
@@ -81,7 +81,7 @@ def load_objectives():
         db.session.add(objective)
 
         # provide sense of progress
-        if i % 2 == 0:
+        if i % 3 == 0:
             print i
 
     # commit all objectives to db
@@ -92,20 +92,20 @@ def load_messages():
     """Load messages from u.message into database."""
 
     # for every row in file, strip and unpack
-    for i, row in enumerate(open('seed_data/u.message')):
+    for i, row in enumerate(open('seed_data/u.messages')):
         row = row.rstrip()
-        message_id, message_text = row.split('|')
+        message_id, message_type, message_text = row.split('|')
 
         # declare message
         message = Message(message_id=message_id,
+                          message_type=message_type,
                           message_text=message_text)
 
         # add to db
         db.session.add(message)
 
         # provide sense of progress
-        if i % 2 == 0:
-            print i
+        print i
 
     # commit all messages to db
     db.session.commit()
@@ -151,12 +151,13 @@ def set_val_objective_id():
 
 if __name__ == "__main__":
     connect_to_db(app)
+    db.drop_all()
     db.create_all()
 
     load_users()
     load_goals()
-    load_objectives()
     load_messages()
+    load_objectives()
     set_val_user_id()
     set_val_goal_id()
     set_val_objective_id()

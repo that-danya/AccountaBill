@@ -6,7 +6,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Goal, Objective, Message
 from twilio import twiml
-from twilio.rest import TwilioRestClient
+from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 import os
 
 app = Flask(__name__)
@@ -17,14 +18,19 @@ app.secret_key = 'duuuuude. this is an app!!'
 # debugger please yell at me if I do something weird
 app.jinja_env.undefined = StrictUndefined
 
-client = TwilioRestClient(
 
-    a_sid=os.environ['ACCOUNT_SID'],
-    a_tok=os.environ['AUTH_TOKEN'])
+# def setup_twilio_client():
+#     """Authenticate ID + Token with Twilio to enable access."""
 
-print api.VerifyCredentials()
+# Pull in id + token from secret.sh
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
 
-# client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
+# Set number = to variable name
+twilio_number = os.environ['TWILIO_NUMBER']
+
+# return client
 
 
 @app.route('/')
@@ -97,10 +103,9 @@ def register_process():
     fname = request.form['fname']
     lname = request.form['lname']
     phone = request.form['phonenum']
-    points = 10.0
 
     # Start DB transaction by assigning variables to User class
-    new_user = User(email=email, password=password, fname=fname, lname=lname, phone=phone, points=points)
+    new_user = User(email=email, password=password, fname=fname, lname=lname, phone=phone)
 
     # Commit to DB
     db.session.add(new_user)
@@ -168,10 +173,9 @@ def render_goal():
 
     # Start DB transaction by assigning variables to Goal class
     new_goal = Goal(user_id=user, goal_text=goal_text, complete=complete)
-    new_text = 'Hi, I\'m Bill your new Accountabillity Buddy! Thanks for joining in! You created this goal "' + goal_text + '" I will text you the night of when your first objective is due. All you gotta do is reply \'YES\' if you completed it. I\'ll do the rest. Reply YES or NO to this message if you\'re on board.'
-    welcome_text = Message(message_text=new_text)
+
     # Commit goal
-    db.session.add_all([new_goal, welcome_text])
+    db.session.add(new_goal)
     db.session.commit()
     # define total num of objective rows
     total_objs = int(request.form.get('objCounter'))
@@ -188,6 +192,7 @@ def render_goal():
         complete = False
         cost = float(request.form.get('goal-points'))
         points = (cost)/total_objs
+        message_id = 1
 
         # concat obj_text
         new_obj_text = 'I will ' + str(do) + " " + str(something)
@@ -195,23 +200,19 @@ def render_goal():
             new_obj_text += ', daily.'
         else:
             new_obj_text += '.'
-        # concat new_message
-        new_message_text = 'You said' + '"' + new_obj_text + '"' + 'Did you complete that task? If so, text back \'YES\''
 
         # Start DB transactoin for new Obj, Message, Text
         new_objective = Objective(goal_id=goal_id,
                                   obj_text=new_obj_text,
                                   due_date=date,
                                   complete=complete,
-                                  point_cost=points)
-
-        new_message = Message(message_text=new_message_text)
+                                  point_cost=points,
+                                  message_id=message_id)
 
     ## TODO: Need to do math for daily
 
     # DB interaction
         db.session.add(new_objective)
-        db.session.add(new_message)
 
     this_user = User.query.get(user)
     this_user.points = this_user.points - cost
@@ -219,6 +220,7 @@ def render_goal():
     db.session.commit()
 
     flash('Your goal was submitted!')
+    send_welcome_text()
     return redirect('/user/%s' % user)
 
 
@@ -256,7 +258,7 @@ def update_objective():
 
     obj_id = request.form.get('obj_id')
     completed = request.form.get('complete')
-    user = request.form.get('user_id')
+    # user = request.form.get('user_id')
 
     objective = Objective.query.get(obj_id)
     objective.complete = completed
@@ -274,7 +276,7 @@ def update_goal():
 
     goal_id = request.form.get('goal_id')
     completed = request.form.get('complete')
-    user = request.form.get('user_id')
+    # user = request.form.get('user_id')
 
     goal = Goal.query.get(goal_id)
     goal.complete = completed
@@ -282,23 +284,59 @@ def update_goal():
     db.session.commit()
     return jsonify(goal.serialize), 200
 
-@app.route('/')
-def get_messages():
 
-@app.route('/', methods='[POST]')
-def send_text():
-    """Send user a text using Twilio API."""
+@app.route('/response', methods=['GET', 'POST'])
+def respond_gotcha_text():
+    """Tell user that their message was recieved."""
 
+    from_number = request.values.get('From', None)
+    if who_texted_bill(from_number):
+        who = who_texted_bill(from_number)
+        message = who + ', I gotcha. Thanks for the update!'
+    else:
+        message = 'I got your message!'
 
+    resp = MessagingResponse()
+    resp.message(message)
+
+    return str(resp)
 
 
 ####################################################################
 # Helper Functions
 
 
+def send_welcome_text():
+    """Once user instantiates goal, send welcome_text."""
+
+    # Get user info
+    user = session['user_id']
+    user = User.query.get(user)
+    num = '+' + user.phone
+
+    # Get message info
+    welcome = Message.query.get(3)
+    body = welcome.message_text
+
+    # Twilio interaction
+    welcome_to_send = client.api.account.messages.create(to=num,
+                                                         from_=twilio_number,
+                                                         body=body)
+    return welcome_to_send
+
+
+def who_texted_bill(phone_number):
+    """Query db to find out which user texted a response back via Twilio."""
+
+    texter = User.query.filter_by(phone=phone_number)
+    name = texter.fname
+
+    return name
+
 # if running this page, run debugger, load to host
 if __name__ == "__main__":
 
+    # client = setup_twilio_client()
     connect_to_db(app)
     DebugToolbarExtension(app)
-    app.run(debug = True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0")
