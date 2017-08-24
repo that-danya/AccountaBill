@@ -7,10 +7,11 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Goal, Objective, Message
 from twilio import twiml
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
+from twilio.twiml.messaging_response import MessagingResponse, Body, Message, Redirect
 import os
 
 app = Flask(__name__)
+app.config.from_object(__name__)
 
 # add key for debug
 app.secret_key = 'duuuuude. this is an app!!'
@@ -288,18 +289,34 @@ def update_goal():
 @app.route('/response', methods=['GET', 'POST'])
 def respond_gotcha_text():
     """Tell user that their message was recieved."""
+    # Grab data from Twilio
+    user_response = request.form.get("Body")
+    print user_response
+    user_number = request.form.get("From")
+    str_num = str(user_number.strip('+'))
+    # user_name = request.values.get('From', None)
+    yes = 'YES'
+    user_response = str(user_response.upper())
+    user_response = user_response.strip(' ')
+    if user_response != yes:
+        print user_response
+    # if user doesn't agree to get texts, change text_confirm + exit function
+    if user_response != 'YES':
+        user = User.query.filter_by(phone=str_num).first()
+        user.text_confirm = False
 
-    from_number = request.values.get('From', None)
-    if who_texted_bill(from_number):
-        who = who_texted_bill(from_number)
-        message = who + ', I gotcha. Thanks for the update!'
-    else:
-        message = 'I got your message!'
+        print ('User %s does not want to be texted.' % (user.user_id))
+        return
 
-    resp = MessagingResponse()
-    resp.message(message)
+    who = who_texted_bill(user_number)
+    # Twilio interaction
+    response = MessagingResponse()
+    message = Message()
+    message.body = 'Hello, ' + who + '! I got your message. Thanks for the update!'
+    response.append(message)
+    response.redirect('gotcha_response.xml', message=message, who=who)
 
-    return str(resp)
+    return str(response)
 
 
 ####################################################################
@@ -328,10 +345,12 @@ def send_welcome_text():
 def who_texted_bill(phone_number):
     """Query db to find out which user texted a response back via Twilio."""
 
-    texter = User.query.filter_by(phone=phone_number)
-    name = texter.fname
-
-    return name
+    texter = User.query.filter_by(phone=phone_number).first()
+    if texter is not None:
+        name = texter.fname
+        return name
+    else:
+        return 'friend'
 
 # if running this page, run debugger, load to host
 if __name__ == "__main__":
