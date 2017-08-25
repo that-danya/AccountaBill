@@ -1,6 +1,7 @@
 """Models and database functions for project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 # DB_URI = 'postgresql:///accountabills'
 
@@ -27,7 +28,7 @@ class User(db.Model):
     phone = db.Column(db.String(15), nullable=False)
     points = db.Column(db.Float, nullable=True, default=10.0)
     text_confirm = db.Column(db.Boolean, nullable=False, default=True)
-
+    last_message_date = db.Column(db.DateTime)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
