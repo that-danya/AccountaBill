@@ -7,8 +7,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Goal, Objective, Message
 from twilio import twiml
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse, Body, Message, Redirect
+from twilio.twiml.messaging_response import MessagingResponse, Body, Message as TMessage, Redirect
 import os
+import re
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -221,7 +222,7 @@ def render_goal():
     db.session.commit()
 
     flash('Your goal was submitted!')
-    send_welcome_text()
+    send_new_goal_text()
     return redirect('/user/%s' % user)
 
 
@@ -286,71 +287,141 @@ def update_goal():
     return jsonify(goal.serialize), 200
 
 
+@app.route('/send_texts', methods=['GET', 'POST'])
+def send_bulk_reminders():
+    """Take list queried from DB, daily and send of reminder texts."""
+
+    pass
+
+
 @app.route('/response', methods=['GET', 'POST'])
-def respond_gotcha_text():
+def twilio_response():
     """Tell user that their message was recieved."""
     # Grab data from Twilio
     user_response = request.form.get("Body")
-    print user_response
     user_number = request.form.get("From")
-    str_num = str(user_number.strip('+'))
-    # user_name = request.values.get('From', None)
-    yes = 'YES'
-    user_response = str(user_response.upper())
-    user_response = user_response.strip(' ')
-    if user_response != yes:
-        print user_response
-    # if user doesn't agree to get texts, change text_confirm + exit function
-    if user_response != 'YES':
-        user = User.query.filter_by(phone=str_num).first()
-        user.text_confirm = False
-
-        print ('User %s does not want to be texted.' % (user.user_id))
-        return
-
     who = who_texted_bill(user_number)
-    # Twilio interaction
-    response = MessagingResponse()
-    message = Message()
-    message.body = 'Hello, ' + who + '! I got your message. Thanks for the update!'
-    response.append(message)
-    response.redirect('gotcha_response.xml', message=message, who=who)
 
-    return str(response)
+    # fit data
+    str_num = user_number.strip('+')
+    user_response = user_response.upper()
+    user_response = user_response.rstrip()
+    #  regex for 'YES' 123
+    yes_obj_match = re.match(r'(YES)?\s*\d', user_response, re.I)
+
+    # TODO: include and last message sent = today (if not, else: Sorry! You can only complete on day it's due!!)
+    if yes_obj_match:
+        # split on space and unpack to 2 variables
+        user_response, obj_num = user_response.split(' ', 1)
+        # # Twilio interaction
+        response = MessagingResponse()
+        response.message('Hello, ' + who + '! I got your message. We updated your objective!')
+
+        update_obj_in_db(obj_num)
+
+        return str(response)
+
+    # if user doesn't agree to get texts, change text_confirm + exit function
+    elif user_response == 'OPT OUT':
+        user = User.query.filter(User.phone == str_num, User.fname == who).first()
+        user.text_confirm = False
+        db.session.commit()
+
+        print ('!!!! *** User %s does not want to be texted. *** !!!!' % (user.user_id))
+        # Twilio interaction
+        response = MessagingResponse()
+        response.message('This will be our last message. Make sure to check off your objectives on the website!')
+
+        return str(response)
+
+    elif user_response == 'YES':
+        # Twilio interaction
+        response = MessagingResponse()
+        response.message('Hello, ' + who + '! I got your message. Thanks for the confirmation!')
+
+        return str(response)
+
+    else:
+        # default oops message
+        response = MessagingResponse()
+        response.message('Didn\'t get that. Please either try again, or log online.')
+
+        return str(response)
 
 
 ####################################################################
 # Helper Functions
 
+def this_user():
+    """Get user_id from db."""
 
-def send_welcome_text():
+    user = session['user_id']
+    user = User.query.get(user)
+
+    return user
+
+
+def send_new_goal_text():
     """Once user instantiates goal, send welcome_text."""
 
     # Get user info
-    user = session['user_id']
-    user = User.query.get(user)
+    user = this_user()
     num = '+' + user.phone
 
-    # Get message info
-    welcome = Message.query.get(3)
-    body = welcome.message_text
+    # if user's first time send introduction to Bill
+    if len(user.goal) <= 1:
+        # Get message info
+        welcome = Message.query.get(3)
+        body = welcome.message_text
+    # otherwise send, I've updated our system!
+    else:
+        created_message = Message.query.get(2)
+        body = created_message.message_text
 
     # Twilio interaction
-    welcome_to_send = client.api.account.messages.create(to=num,
-                                                         from_=twilio_number,
-                                                         body=body)
-    return welcome_to_send
+    new_message = client.api.account.messages.create(to=num,
+                                                     from_=twilio_number,
+                                                     body=body)
+    return new_message
 
 
 def who_texted_bill(phone_number):
     """Query db to find out which user texted a response back via Twilio."""
 
-    texter = User.query.filter_by(phone=phone_number).first()
+    # fit data
+    phone_number = phone_number.strip('+')
+    # define user by number
+    texter = User.query.filter_by(phone=phone_number).first_or_404()
+    # Grab user's first name
     if texter is not None:
         name = texter.fname
         return name
     else:
         return 'friend'
+
+
+def user_id_of_texter(phone_number):
+    """Query db to find out user_id of texter."""
+
+    # fit data
+    phone_number = phone_number.strip('+')
+    # define user by number
+    texter = User.query.filter_by(phone=phone_number).first_or_404()
+    # Grab user's first name
+    if texter is not None:
+        user_id = texter.user_id
+        return user_id
+
+
+def update_obj_in_db(obj_num):
+    """Update user's objective in the database."""
+
+    obj = Objective.query.get(obj_num)
+    obj.complete = True
+
+    db.session.commit()
+    return
+
 
 # if running this page, run debugger, load to host
 if __name__ == "__main__":

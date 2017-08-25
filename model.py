@@ -28,6 +28,7 @@ class User(db.Model):
     points = db.Column(db.Float, nullable=True, default=10.0)
     text_confirm = db.Column(db.Boolean, nullable=False, default=True)
 
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 
