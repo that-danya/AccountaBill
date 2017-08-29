@@ -1,0 +1,9 @@
+PATH=/home/vagrant/src/AccountaBill/env/bin:/home/vagrant/bin:/home/vagrant/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:
+
+SHELL=/bin/bash
+
+HOME=/home/vagrant/src/AccountaBill
+
+MAILTO=”a.countabill@gmail.com”
+
+* 24 * * * python /home/vagrant/src/AccountaBill/getNumbers.py
