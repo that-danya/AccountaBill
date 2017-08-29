@@ -427,7 +427,6 @@ def update_obj_in_db(obj_num):
 # if running this page, run debugger, load to host
 if __name__ == "__main__":
 
-    # client = setup_twilio_client()
     connect_to_db(app)
     DebugToolbarExtension(app)
     app.run(debug=True, host="0.0.0.0")
