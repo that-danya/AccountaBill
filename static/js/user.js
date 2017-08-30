@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 // append the text of the objective
                 objDiv.append(item.obj_text);
+                var date = item.due_date;
+                objDiv.append(' I will do this by: ' + date.slice(0,10));
                 // append to the corresponding goaldiv
                 var newDiv = $('#goalDiv-' + goal_id);
                 newDiv.append(objDiv);
