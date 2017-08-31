@@ -10,7 +10,6 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse, Body, Message as TMessage, Redirect
 import os
 import re
-from crontab import CronTab
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -286,13 +285,6 @@ def update_goal():
 
     db.session.commit()
     return jsonify(goal.serialize), 200
-
-
-@app.route('/send_texts', methods=['GET', 'POST'])
-def send_bulk_reminders():
-    """Take list queried from DB, daily and send of reminder texts."""
-
-    pass
 
 
 @app.route('/response', methods=['GET', 'POST'])
