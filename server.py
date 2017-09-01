@@ -341,14 +341,13 @@ def twilio_response():
     user_response = user_response.rstrip()
     #  regex for 'YES' 123
     obj_match = re.match(r'\d+', user_response, re.I)
-
     # TODO: include and last message sent = today (if not, else: Sorry! You can only complete on day it's due!!)
     if obj_match:
         # # Twilio interaction
         response = MessagingResponse()
         response.message('Hello, ' + who + '! I got your message. We updated your objective!')
 
-        update_obj_in_db(obj_num)
+        update_obj_in_db(user_response)
 
         return str(response)
 

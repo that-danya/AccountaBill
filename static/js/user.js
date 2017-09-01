@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
             var goalDiv = $('<div>').attr({'class': 'goal',
                                   'id': 'goalDiv-' + goal.goal_id,
             });
+            var chartDiv = $('<div>').attr({'class': 'donut', 
+                                            'id': 'chartDiv-' + goal.goal_id,
+            });
             goalDiv.html(goal.goal_text);
+            goalDiv.append(chartDiv);
             // if goal not complete, append div to parent,
             // else append to parentComplete
             if (goal.complete === false) {
