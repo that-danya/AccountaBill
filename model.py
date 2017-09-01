@@ -29,6 +29,8 @@ class User(db.Model):
     points = db.Column(db.Float, nullable=True, default=10.0)
     text_confirm = db.Column(db.Boolean, nullable=False, default=True)
     last_message_date = db.Column(db.DateTime)
+    earn_thing = db.Column(db.String(70))
+    thing_cost = db.Column(db.Float, default=10)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

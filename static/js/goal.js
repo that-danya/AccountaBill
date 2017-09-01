@@ -10,7 +10,9 @@
         var totalObjField = $('#obj-counter');
         var click = 0;
         click ++;
+        debugger;
         var points = $('#points');
+        console.log(points);
 
         // if objCounter> points, disable button
         if (Math.floor($('#points').val()) < (Math.floor($('#obj-counter').val()))) {

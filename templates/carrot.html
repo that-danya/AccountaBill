@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block script_for_page %}
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <script src="/static/js/user.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class='maindiv'>
+  <h1>First Step:</h1>
+  <h2>Before you create a goal, think about exactly what you want to earn. When you have completed all the corresponding tasks (objectives) of that thing, go ahead and get this thing!</h2>
+
+  <form action='/carrot_defined' method='POST' id='carrot-form'>
+  <label for='Earn a thing'>
+    <h3>What is it that you want to buy once you have completed all the steps?
+    </h3>
+  <input type='text' name='earnThing' required value='Ex: A new guitar'></label>
+  <label for='cost-to-points'><h3>How much will that cost?</h3>
+  <input type='number' name='thingCost' min='1.00' max='100000.00' step='1.00' required value='850'><br/></label><br>
+  <label for='submitting-thing'><input id='earn-button' name='earnButton' type='submit' value='Alright, onto setting my goal!'></label>
+  </form>
+  <div class='chart'></div>
+  <div class='text'></div>
+
+</div> <!-- END MAIN DIV-->
+
+
+{% endblock %}

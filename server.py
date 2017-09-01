@@ -118,7 +118,7 @@ def register_process():
     session['user_id'] = new_user.user_id
 
     # redirect to goal page
-    return redirect('/goal')
+    return redirect('/carrot')
 
 
 @app.route('/user/<int:user_id>')
@@ -134,7 +134,47 @@ def user_page(user_id):
         # send user to user_page
         return render_template('user.html', user=user)
 
+
 ## TODO 'BUY' page or Get more points page
+@app.route('/carrot', methods=['GET'])
+def carrot_form():
+    """Show carrot form."""
+
+    # if user is not signed in, redirect home
+    if not session['user_id']:
+        flash('You have not logged in yet!')
+        return redirect('/')
+
+    user = session['user_id']
+    user = User.query.get(user)
+
+    # if points < 1:
+    #     flash('You do not have enough points to create a new goal! Perhaps complete an objective first?')
+    #     return redirect('/user/%s' % session['user_id'])
+
+    return render_template('carrot.html')
+
+
+@app.route('/carrot_defined', methods=['POST'])
+def define_carrot():
+    """Process carrot data."""
+
+    # define user
+    user = this_user()
+
+    # grab user data from form on /carrot
+    earn_this_item = request.form.get('earnThing')
+    cost_item = request.form.get('thingCost')
+
+    # interact with db
+    # user = User.query.get(user)
+    user.earn_thing = earn_this_item
+    user.thing_cost = cost_item
+    user.points = cost_item
+
+    db.session.commit()
+
+    return redirect('/goal')
 
 
 @app.route('/goal', methods=['GET'])
@@ -192,7 +232,7 @@ def render_goal():
         daily = request.form.get('obj-check' + i)
         date = request.form.get('obj-date' + i)
         complete = False
-        cost = float(request.form.get('goal-points'))
+        cost = float(request.form.get('points'))
         points = (cost)/total_objs
         message_id = 1
 
@@ -300,12 +340,10 @@ def twilio_response():
     user_response = user_response.upper()
     user_response = user_response.rstrip()
     #  regex for 'YES' 123
-    yes_obj_match = re.match(r'(YES)?\s*\d', user_response, re.I)
+    obj_match = re.match(r'\d+', user_response, re.I)
 
     # TODO: include and last message sent = today (if not, else: Sorry! You can only complete on day it's due!!)
-    if yes_obj_match:
-        # split on space and unpack to 2 variables
-        user_response, obj_num = user_response.split(' ', 1)
+    if obj_match:
         # # Twilio interaction
         response = MessagingResponse()
         response.message('Hello, ' + who + '! I got your message. We updated your objective!')

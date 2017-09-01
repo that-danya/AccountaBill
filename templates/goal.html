@@ -12,6 +12,7 @@
 {% block content %}
 <div class='maindiv'>
 <div id='top-heading'>
+    <h1>Second Step</h1>
     <h2> Let's create a goal with some objectives!</h2>
 </div>
 <div>
@@ -32,8 +33,8 @@
             <input type='date' name='goal-date' required min='2017-08-07'/>
             <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->
             <br>
-            This goal is worth
-            <input type='number' name='goal-points' value={{points}} min='1' max={{points}} required/> points.
+            This goal is worth {{points}} total points. Each objective will be a portion of this total.
+            <!-- <input type='number' name='goal-points' value={{points}} min={{points}} max={{points}} required/> points. -->
         </label>
     </div><br> <!-- End goal div-->
 
