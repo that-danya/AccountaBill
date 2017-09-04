@@ -4,8 +4,7 @@
 var user = $('#user-id').html();
 var points = $('#points').html();
 var aim = $('#thing-cost').html();
-console.log((points));
-console.log((aim));
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // name parent divs

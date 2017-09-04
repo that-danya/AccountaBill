@@ -1,44 +1,87 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br><br>
 
-<form action='/register' method='POST'>
-    <div>
-        <label>Email:<br>
-            <input type='email' name='email' required>
-        </label>
-    </div>
-    <div>
-        <label>Password:<br>
-            <input type='password' name='password' required>
-        </label>
-    </div>
+<form class="form-horizontal" action='/register' method='POST'>
+<fieldset>
 
-        <label>First Name:<br>
-            <input type='text' name='fname' required>
-        </label>
-    </div>
-    <div>
-        <label>Last Name:<br>
-            <input type='text' name='lname' required>
-        </label>
-    </div>
-    <div>
-        <label>Phone Number: <br>
-            (Please use no special characters! 1-234-567-8901 should be 12345678901) <br>
-            <input type='tel' pattern="[0-9]{11}" name='phonenum' required>
-        </label>
-    </div>
-    <div>
+<!-- Form Name -->
+<legend>Register</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="email">Email</label>  
+  <div class="col-md-4">
+  <input id="email" name="email" type="text" placeholder="email@email.com" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="password">Password</label>
+  <div class="col-md-4">
+    <input id="password" name="password" type="password" placeholder="secretsecretsecret" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fname">First Name</label>  
+  <div class="col-md-4">
+  <input id="fname" name="fname" type="text" placeholder="First Name" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="lname">Last Name</label>  
+  <div class="col-md-4">
+  <input id="lname" name="lname" type="text" placeholder="Last Name" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="phonenum">Phone Number</label>  
+  <div class="col-md-4">
+  <input id="phonenum" name="phonenum" type="text" pattern="[0-9]{11}" placeholder="12345678910" class="form-control input-md" required="">
+  <span class="help-block">(Please use no special characters! 1-234-567-8901 should be 12345678901)</span>  
+  </div>
+</div>
+
+
+<!-- Multiple Checkboxes (inline) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="checkbox">Text me!</label>
+  <div class="col-md-4">
+    <label class="checkbox-inline" for="checkbox-0">
+      <input type="checkbox" name="agreetext" id="agreetext" required>
+      By checking this box, I agree to receive text reminders.
+    </label>
+  </div>
+</div>
+
+<!--     <div>
         <label>I agree to receive texts reminders.<br>
             <input type='checkbox' name='agreetext' required>
         </label>
-    </div>
-    <div>
-        <label>
-        <input type='submit' value='register' required>
-        </label>
-    </div>
+    </div> -->
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submit"></label>
+  <div class="col-md-4">
+    <button id="submit" name="submit" class="btn btn-inverse">REGISTER ME!</button>
+  </div>
+</div>
+
+</fieldset>
 </form>
 
 {% endblock %}
