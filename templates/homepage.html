@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
+{% block script_for_page %}
+<script src="/static/js/user.js"></script>
+{% endblock %}
 
-{% block content %}
-
-<h1>AccountaBill</h1>
-
+<!-- 
 {% if "user_id" not in session %}
     <div id='register-start'>
         <h3>Would you like to sign up for an account?</h3>
-        <form action='/register' method='GET'>
+        <form action='/register' method='GET'> -->
          <!--    <div>
                 <label>Email:
                     <input type='email' name='email' required>
@@ -18,31 +18,58 @@
                     <input type='password' name='password' required>
                 </label>
             </div> -->
-            <div>
+<!--             <div>
                 <input type='submit' value='Register' required>
             </div>
         </form>
     </div>
 
-{% endif %}
+{% endif %} -->
 
-<div id='homepage-info'>
-    <h3>Be your own accountabillity partner!</h3>
-    <ul>
-        <li>Step 1: Create an account.</li>
-        <li>Step 2: Set a goal with reasonable objectives.
-            <ul>
-            <li>Identify how much you are willing to 'pay' yourself to complete it.</li>
-            <li>Set that money aside.</li>
-            <li>Everytime you complete an objective, you get part of that money back!</li>
-            </ul>
-        </li>
-        <li>Step 3: Make sure you check off when you complete an item!</li>
-        <a href="/goal">Get started here!</a>
-    </ul>
+{% block carousel %}
+
+<!-- Inspired by https://codepen.io/crashy/pen/JoKMgG -->
+<div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role='listbox'>
+    <div class="item active"><br><br><br><br><br><br><br><br><br><br><br><br><span class='title'><h1>&nbsp;&nbsp;&nbsp;&nbsp;"Keeping myself accountable to <br> &nbsp;&nbsp;&nbsp;&nbsp;practicing helped <br>&nbsp;&nbsp;&nbsp;&nbsp;me land my first gig!"</h1></span>
+      <!-- <img src="/static/Images/banjo.jpg" alt="I learned to play the Banjo!"> -->
+    </div>
+
+    <div class="item"><br><br><br><br><br><br><br><br><br><br><br><br><span class='title'><h1>&nbsp;&nbsp;&nbsp;&nbsp;"I actually committed<br> &nbsp;&nbsp;&nbsp;&nbsp;to learn how to<br>&nbsp;&nbsp;&nbsp;&nbsp;take professional quality photos."</h1></span>
+      <!-- <img src="/static/Images/callmom.jpg" alt="I improved my relationship with my mom by remembering to call!"> -->
+    </div>
+
+    <div class="item"><br><br><br><br><br><br><br><br><br><br><br><br><span class='title'><h1>&nbsp;&nbsp;&nbsp;&nbsp;"Bill helped me stick<br> &nbsp;&nbsp;&nbsp;&nbsp;with training, and<br>&nbsp;&nbsp;&nbsp;&nbsp;now I can say that<br>&nbsp;&nbsp;&nbsp;&nbsp;I ran a marathon!"</h1></span>
+      <!-- <img src="/static/Images/photography.jpg" alt="I learned how to professional level photography skills!"> -->
+    </div>
+  </div>
 </div>
 
+{% endblock %}
+{% block content %}
 
-
+<div class="container-fluid">
+    <div class="row col-xs-12 col-sm-6 col-md-8">
+    </div>
+    <div id='homepage-info' class="row col-xs-12 col-md-6 col-lg-4 col-md-offset-6 col-lg-offset-8" style='background-color: rgba(255, 255, 255, 0.5); text-shadow: 2px 2px #000 color: #FFF;'>
+        <h1>AccountaBill</h1>
+        <br>
+        <h3>Be your own accountabillity partner!</h3>
+        <ul>
+            <li>Step 1: Create an account.</li>
+            <li>Step 2: Set a goal with reasonable objectives.
+                <ul>
+                <li>Identify how much you are willing to 'pay' yourself to complete it.</li>
+                <li>Set that money aside.</li>
+                <li>Everytime you complete an objective, you get part of that money back!</li>
+                </ul>
+            </li>
+            <li>Step 3: Make sure you check off when you complete an item!</li>
+            <a href="/goal">Get started here!</a>
+        </ul>
+    </div>
+</div>  <!-- End container fluid div -->
 
 {% endblock %}
