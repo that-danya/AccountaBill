@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% block script_for_page %}
-    <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js">
-</script>
-    <script
+  <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-    <script src="/static/js/user.js"></script>
+  <script src="/static/js/donut.js"></script>
+  <script src="/static/js/user.js"></script>
+
 {% endblock %}
 
 
@@ -15,9 +14,13 @@
 <div class='maindiv'>
   <div id='user-heading'>
     <h1>{{ user.email }} (<span id='user-id'>{{ user.user_id }}</span>)</h1>
-    <h3>Points available: {{ user.points }}</h3>
+    <h3>Points available: <span id='points'>{{ user.points }}</span></h3>
+    <div id='earn-item'>{{ user.earn_thing }}
+    <span id='thing-cost'>{{ user.thing_cost }}</span></div>
     <!-- <div id='heatmap' name='heatmap'></div> -->
-    <div id='myChart'><canvas id="myChart" height='400' width="400"></canvas></div>
+    <div width='200' height='200'>
+      <canvas id="myCharts" height="75" width="75"></canvas><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    </div>
   </div><!-- END USER HEADING -->
 
   <div id='completed-goals'>

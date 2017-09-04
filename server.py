@@ -19,7 +19,7 @@ app.secret_key = 'duuuuude. this is an app!!'
 
 # debugger please yell at me if I do something weird
 app.jinja_env.undefined = StrictUndefined
-
+app.jinja_env.auto_reload = True
 
 # def setup_twilio_client():
 #     """Authenticate ID + Token with Twilio to enable access."""
@@ -265,6 +265,14 @@ def render_goal():
     send_new_goal_text()
     return redirect('/user/%s' % user)
 
+@app.route('/user/<int:user_id>/chart.json')
+def get_user_info(user_id):
+
+    if session['user_id'] == user_id:
+
+        user_data = User.query.get(user_id).one()
+
+        return jsonify(user_data.serialize)
 
 @app.route('/user/<int:user_id>.json')
 def get_obj_info(user_id):

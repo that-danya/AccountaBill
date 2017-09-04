@@ -38,6 +38,19 @@ class User(db.Model):
         return "<User user_id=%s email=%s>" % (self.user_id,
                                                self.email)
 
+    @property
+    def serialize(self):
+        """Return dictionary of data in class."""
+
+        data = {
+            'user_id': self.user_id,
+            'points': self.points,
+            'earn_thing': self.earn_thing,
+            'thing_cost': self.thing_cost,
+        }
+
+        return data
+
 
 class Goal(db.Model):
     """Goal of user."""
