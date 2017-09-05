@@ -93,6 +93,7 @@ html {
     height: 100%;
 }
 
+
 .Absolute-Center {
   width: 75%;
   height: 75%;
@@ -100,6 +101,21 @@ html {
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+hr.style8 {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+.texture {
+    background-color: rgba(255, 255, 255, 0.5);
+    text-shadow: 2px 2px #000 color: #FFF;
 }
 
 /*CSS for nav bar*/

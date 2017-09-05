@@ -16,12 +16,16 @@
 <div class='maindiv container-fluid'>
   <div id='user-heading'>
     <h1>{{ user.email }} (<span id='user-id'>{{ user.user_id }}</span>)</h1>
-      <h3>Points available: <span id='points'>{{ user.points }}</span><br></h3>
+      <h3 hidden>Points available: <span id='points'>{{ user.points }}</span><br></h3>
   <div>
   <div id='goaltainer' class="row">
-    <div id='current-goal' class="col-xs-12 col-sm-4">
-      <div id='earn-item'>Currently working towards: {{ user.earn_thing }}
-      <span id='thing-cost'>{{ user.thing_cost }}</span></div>
+    <div id='current-goal' class="col-xs-12 col-sm-4 col-sm-offset-1">
+      <div id='earn-item'><h4>Currently working towards: <br> {{ user.earn_thing }}<br>
+      Amount to save: $<span id='thing-cost'>{{ user.thing_cost }}</span></h4></div>
+      <br>
+      <br>
+      <br>
+      <br>
       <!-- <div id='heatmap' name='heatmap'></div> -->
       <div width='200' height='200'>
         <canvas id="myCharts" height="75" width="75"></canvas><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
@@ -30,22 +34,34 @@
 
     <!-- col 2 -->
     <div class='col-xs-12 col-sm-6' style='background-color: rgba(255, 255, 255, 0.5); text-shadow: 2px 2px #000 color: #FFF;'>
-      <div id='completed-goals'>
-        <h2>Goals completed:</h2>
+     <div >
+      <div id='completed-goals' class='col-xs-10 col-xs-offset-1'>
+        <br>
+        <br>
+        <h3>Goals completed:</h3>
+        <hr class='style8'>
       </div> <!-- END completed-goals DIV-->
       
       <form action='/user' method='POST' id='user-goal-update'>
-      <div id='to-complete-goals'>
-        <h2>Goals to complete:</h2>
+      <div id='to-complete-goals' class='col-xs-10 col-xs-offset-1'>
+        <h3>Goals to complete:</h3>
+        <hr class='style8'>
       </div> <!-- END to-complete-goals DIV-->
+     </div>
       <!-- submit button here -->
       <br>
 
       <div class="form-group">
         <label class="col-md-4 control-label" for="update-objective-button"></label>
         <div class="col-md-4">
+          <br>
+          <br>
           <button id="update-objective-button" name="update-objective-button" class="btn btn-inverse">Update my Objectives!</button>
+          <br>
+          <br>
+          <br>
         </div>
+        <br>
       </div>
       </form>
     </div>

@@ -10,13 +10,16 @@
 
 {% block content %}
 <div class='maindiv container-fluid'>
-<form class="form-horizontal" action='/carrot_defined' method='POST' id='carrot-form'>
+  <div class='row' style='height: 40px;'></div>
+
+<div class='smallerMain row'>
+<form class="form-horizontal col-md-8 col-md-offset-2 texture" method='POST' id='carrot-form' action='/carrot_defined'>
 <fieldset>
 
 <!-- Progress Bar -->
 <div class="progress">
-  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
-  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:50%"> Completed - 50%
   </div>
 </div>
 
@@ -59,6 +62,8 @@
 </fieldset>
 </form>
 
+
+</div> <!-- END smallerMain DIV-->
 </div> <!-- END MAIN DIV-->
 
 

@@ -2,7 +2,6 @@
 //function makeDoughnut(thing_cost, points) {
 function makeDoughnut(goal_id, data1, data2) {
 // $(document).on('ready', function () {
-
     var options = { // these are default values
         responsive: true,
         cutoutPercentage: 75,
