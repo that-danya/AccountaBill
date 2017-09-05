@@ -27,8 +27,8 @@ function makeDoughnut(goal_id, data1, data2) {
 
         // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: [
-            'Points earned',
-            'Poins to earn'
+            'Poins to earn',
+            'Poins earned'
         ]
     };
 

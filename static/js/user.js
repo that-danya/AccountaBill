@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var parentCanvas = $('#myCharts');
     var parentDiv = $('#to-complete-goals');
     var parentDivComplete = $('#completed-goals');
-    makeDoughnut(result.goal_id, parseInt(aim) - parseInt(points), parseInt(points));
+    
     // get user page, json data
     $.get('/user/'+ user +'.json', function(results){
         // set variables
         var objs_dict = results.objectives;
         var goals = results.goals;
+        makeDoughnut(results.goal_id, parseInt(aim) - parseInt(points), parseInt(points));
 
         // loop over goals, create div + append to parent
         for (var goal of goals) {
