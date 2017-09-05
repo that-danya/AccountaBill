@@ -6,6 +6,7 @@
 
 
 {% block base2 %}
+<!-- Navbar inspired by https://codepen.io/Webspicer/pen/QwvRzM -->
 <div class="navbar navbar-inverse navbar-fixed-top opaque-navbar">
   <div class="container">
     <div class="navbar-header">
@@ -17,7 +18,7 @@
     </div>
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="nav navbar-nav pull-right">
-        <li class="active"><a href="/">My Page</a></li>
+        <li class="active"><a href="/">Home</a></li>
         <li><a href="#">About Us</a></li>
         {% if "user_id" in session %}
         <li><a href="/carrot">Create a New goal</a></li> 

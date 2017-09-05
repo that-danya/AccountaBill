@@ -18,9 +18,9 @@ function makeDoughnut(goal_id, data1, data2) {
     var data = {
         datasets: [{
             label: "Goal",
-            backgroundColor: ['rgb(149, 255, 214)',
-                               'rgb(156, 43, 178)' ,
-                               'rgb(247, 207, 59)'],
+            backgroundColor: ['rgba(225,185,81, 0.8)',
+                               'rgba(43,42,0, 0.6)' ,
+                               '#731f0a'],
             data: [data1, data2]
             //data: [points, (thing_cost - points)]
         }],
