@@ -102,4 +102,56 @@ html {
   top: 0; left: 0; bottom: 0; right: 0;
 }
 
+/*CSS for nav bar*/
+.opaque-navbar {
+    background-color: rgba(0,0,0,0.5);
+  /* Transparent = rgba(0,0,0,0) / Translucent = (0,0,0,0.5)  */
+    height: 60px;
+    border-bottom: 0px;
+    transition: background-color .5s ease 0s;
+}
+
+.opaque-navbar.opaque {
+    background-color: green;
+    height: 60px;
+    transition: background-color .5s ease 0s;
+}
+
+ul.dropdown-menu {
+    background-color: green;
+}
+
+
+@media (max-width: 992px) {
+  body
+  {
+    background: green;
+  }
+  .opaque-navbar {
+    background-color: green;
+    height: 60px;
+    transition: background-color .5s ease 0s;
+}
+
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #b6b27f;
+}
+
+.opaque-navbar {
+    background-color: rgba(225,185,81, 0.3);
+    height: 60px;
+    border-bottom: 0px;
+    transition: background-color .5s ease 0s;
+}
+
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 35px;
+    line-height: 30px;
+}
 

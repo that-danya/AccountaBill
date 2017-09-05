@@ -1,25 +1,48 @@
 {% extends 'base.html' %}
 
-{% block base2 %}
-<div class='container-fluid'>
-<h1>AccountaBill</h1>
-{% if "user_id" in session %}
-    <a href="/carrot">Create a Goal</a>
-    <a href="/logout">Logout</a>
-    <a href="/user/{{session['user_id']}}">My Page</a>
-{% else %}
-    <a href="/login">Login</a>
-{% endif %}
+{% block script_for_page %}
+  <script src="/static/js/nav.js"></script>    
+{% endblock %}
 
+
+{% block base2 %}
+<div class="navbar navbar-inverse navbar-fixed-top opaque-navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navMain">
+  <span class="glyphicon glyphicon-chevron-right" style="color:white;"></span>
+    
+  </button>
+      <a class="navbar-brand" href="/">Accounta<b>Bill</b></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="nav navbar-nav pull-right">
+        <li class="active"><a href="/">My Page</a></li>
+        <li><a href="#">About Us</a></li>
+        {% if "user_id" in session %}
+        <li><a href="/carrot">Create a New goal</a></li> 
+        <li><a href="/logout">Logout</a></li> 
+        <li><a href="/user/{{session['user_id']}}">My Page</a></li>
+        {% else %}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li> 
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class='container-fluid'>
 {% for flash in get_flashed_messages() %}
   {{ flash }}
 {% endfor %}
 </div>
-
+<div class='container-fluid'>
 {% block content %}
 HI!
 {% endblock %}
-
+</div>
 
 {% endblock %}
 
