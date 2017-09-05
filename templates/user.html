@@ -16,12 +16,12 @@
 <div class='maindiv container-fluid'>
   <div id='user-heading'>
     <h1>{{ user.email }} (<span id='user-id'>{{ user.user_id }}</span>)</h1>
-      <h3 hidden>Points available: <span id='points'>{{ user.points }}</span><br></h3>
+      <h3>Points available: <span id='points'>{{ user.points }}</span><br></h3>
   <div>
   <div id='goaltainer' class="row">
     <div id='current-goal' class="col-xs-12 col-sm-4">
       <div id='earn-item'>Currently working towards: {{ user.earn_thing }}
-      <span id='thing-cost' hidden>{{ user.thing_cost }}</span></div>
+      <span id='thing-cost'>{{ user.thing_cost }}</span></div>
       <!-- <div id='heatmap' name='heatmap'></div> -->
       <div width='200' height='200'>
         <canvas id="myCharts" height="75" width="75"></canvas><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
@@ -39,9 +39,18 @@
         <h2>Goals to complete:</h2>
       </div> <!-- END to-complete-goals DIV-->
       <!-- submit button here -->
-      <div><input type='submit' value="Update Me!" id='update-objective-button' required/></div>
+      <br>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="update-objective-button"></label>
+        <div class="col-md-4">
+          <button id="update-objective-button" name="update-objective-button" class="btn btn-inverse">Update my Objectives!</button>
+        </div>
+      </div>
       </form>
     </div>
+
+
 
   </div> 
 </div> <!-- END MAIN DIV-->

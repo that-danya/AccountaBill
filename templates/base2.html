@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="nav navbar-nav pull-right">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="#">About Us</a></li>
+        <!-- <li><a href="#">About Us</a></li> -->
         {% if "user_id" in session %}
         <li><a href="/carrot">Create a New goal</a></li> 
         <li><a href="/logout">Logout</a></li> 
@@ -35,7 +35,10 @@
 </div>
 
 
-<div class='container-fluid body'>
+<div class='container-fluid bg'>
+    <br>
+    <br>
+    <br>
 {% for flash in get_flashed_messages() %}
   {{ flash }}
 {% endfor %}

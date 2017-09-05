@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // loop over goals, create div + append to parent
         for (var goal of goals) {
             // create div to append
-            var goalDiv = $('<div>').attr({'class': 'goal',
+            var goalDiv = $('<div>').attr({'class': 'goal container',
                                   'id': 'goalDiv-' + goal.goal_id,
             });
             var chartDiv = $('<canvas>').attr({'class': 'chart',
@@ -52,32 +52,32 @@ document.addEventListener('DOMContentLoaded', function() {
             // var points_left = ($('#thing_cost').html()) - ($('#points').html());
             // var earned_points = ($('#points').html();
             // makeDoughnut(goal_id, earned_points, points_left);
-            var same = [];
-            for (var goal of objs_dict[goal_id]) {
-                if (same === []) {
-                    same = goal.goal_id;
-                    if (goal.complete === true) {
-                        earned_points += goal.point_cost;
-                    } else {
-                        points_left += goal.point_cost;
-                    }
-                } else if (same === goal.goal_id) {
-                    if (goal.complete === true) {
-                        earned_points += goal.point_cost;
-                    } else if (goal.complete === false) {
-                        points_left += goal.point_cost;
-                    }
-                } else {
-                    // makeDoughnut(same, earned_points, points_left);
-                    if (goal.complete === true) {
-                        earned_points += goal.point_cost;
-                    } else if (goal.complete === false) {
-                        points_left += goal.point_cost;
-                    }
-                }
+            // var same = [];
+            // // for (var goal of objs_dict[goal_id]) {
+            //     if (same === []) {
+            //         same = goal.goal_id;
+            //         if (goal.complete === true) {
+            //             earned_points += goal.point_cost;
+            //         } else {
+            //             points_left += goal.point_cost;
+            //         }
+            //     } else if (same === goal.goal_id) {
+            //         if (goal.complete === true) {
+            //             earned_points += goal.point_cost;
+            //         } else if (goal.complete === false) {
+            //             points_left += goal.point_cost;
+            //         }
+            //     } else {
+            //         // makeDoughnut(same, earned_points, points_left);
+            //         if (goal.complete === true) {
+            //             earned_points += goal.point_cost;
+            //         } else if (goal.complete === false) {
+            //             points_left += goal.point_cost;
+            //         }
+            //     }
           
                 
-            } // end for goal of goal_id loop
+            // } // end for goal of goal_id loop
 
             // name var that gives back objective array
             var obj_array = objs_dict[objs];
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (var item of obj_array) {
                 
                 // create elements with corresponding objective id
-                var objDiv = $('<div>').attr({'class': 'objective',
+                var objDiv = $('<div>').attr({'class': 'objective container',
                                               'id': 'objDiv' + item.obj_id});
                 var radio = $('<input>').attr({'type': 'radio',
                                                  'name': 'objRadio',
@@ -106,23 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     objDiv.html(radio);
                 }
                 // append the text of the objective
-                objDiv.append(item.obj_text);
+                objDiv.append(" " + item.obj_text + ". ");
                 var date = item.due_date;
                 objDiv.append(' I will do this by: ' + date.slice(0,10));
                 // append to the corresponding goaldiv
                 var newDiv = $('#goalDiv-' + goal_id);
                 newDiv.append(objDiv);
-
-
-                // set up data for chart
-                // if (goal.complete === true) {
-                //     earned_points += goal.point_cost;
-                // } else {
-                //     points_left += goal.point_cost;
-                // }
-                // console.log(earned_points);
-                // var stats = [earned_points, points_left];
-                // makeDoughnut(goal.goal_id, stats);
 
             }  // end for loop for every item in array
         }  // end for loop for keys
@@ -152,6 +141,9 @@ function updateObjective(evt) {
                 // for ui, change color of text
                 $("#to-complete-goals .goal:not(:has(input[type=radio]))").css('color', '#e7efd2');
                 // if a goaldiv has no radio buttons, call updateGoal with goal id passed in
+                // removeData(($('#chart' + result.goal_id)));
+                // console.log(($('#chart' + result.goal_id)));
+                aim = parseInt(points) + parseInt(result.point_cost);
                 makeDoughnut(result.goal_id, parseInt(aim) - parseInt(points), parseInt(points));
                 if ($('#goalDiv-' + result.goal_id).find(':radio').length === 0) {
                     updateGoal(result.goal_id);
@@ -180,5 +172,13 @@ function updateGoal(goal_id) {
 } // end updateGoal function
 
 // event listener on update button
+function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+}
+
 $('#update-objective-button').on('click', updateObjective);
 
