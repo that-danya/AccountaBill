@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block base2 %}
+<h1>AccountaBill</h1>
+{% if "user_id" in session %}
+    <a href="/carrot">Create a Goal</a>
+    <a href="/logout">Logout</a>
+    <a href="/user/{{session['user_id']}}">My Page</a>
+{% else %}
+    <a href="/login">Login</a>
+{% endif %}
+
+{% for flash in get_flashed_messages() %}
+  {{ flash }}
+{% endfor %}
+
+{% block content %}
+HI!
+{% endblock %}
+
+
+{% endblock %}
+

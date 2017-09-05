@@ -11,12 +11,18 @@
 </head>
 <body>
 
+    {% block base2 %}
+    {% endblock %}
+
     {% block carousel %}
     {% endblock %}
 
-{% block content %}
-{% endblock %}   
+    {% block content2 %}
+    {% endblock %}
 
+{# 
+    This is not rendered
+#}
     {% block script_for_page %}
     {% endblock %}
 
