@@ -10,57 +10,84 @@
 
 
 {% block content %}
-<div class='maindiv'>
-<div id='top-heading'>
-    <h1>Second Step</h1>
-    <h2> Let's create a goal with some objectives!</h2>
-</div>
-<div>
-    <ul>
-        What is something you want to accomplish? Big or small, just follow the form to capture what you want to complete. It's a good idea to have more than one objective.
+<div class='maindiv container-fluid'>
+<form class="form-horizontal" action='/define_goal' method='POST' id='goal-form'>
+<fieldset>
 
-    </ul>
-    <!-- Begin Goal/Obj Form -->
-    <form action='/define_goal' method='POST' id='goal-form'>
-    
-    <!-- *** Goal ***-->
-    <div>
-        <label>Goal:<br>
-            I want to 
-            <input type='text' name='goal-action' required value='do'/> 
-            <input type='text' name='goal-noun' required value='something'/> 
-            by 
-            <input type='date' name='goal-date' required min='2017-08-07'/>
-            <!--  TODO: THIS IS HARDCODED, NEED TO UPDATE WITH ARROW?DATETIME -->
-            <br>
-            This goal is worth {{points}} total points. Each objective will be a portion of this total.
+<!-- Form Name -->
+<legend>What do you want to accomplish?</legend>
+<div class='goal'>
+<!-- Prepended text-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="goal-action">What's the big goal?</label>
+  <div class="col-md-4">
+    <div class="input-group">
+      <span class="input-group-addon">I want to</span>
+      <input id="goal-action" name="goal-action" class="form-control" placeholder="do" type="text" required="">
+    </div>
+    <p class="help-block">Put in a verb here. </p>
+  </div>
+</div>
+
+<!-- Appended Input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="goal-noun"></label>
+  <div class="col-md-4">
+    <div class="input-group">
+      <input id="goal-noun" name="goal-noun" class="form-control" placeholder="something" type="text" required="">
+      <span class="input-group-addon">by</span>
+    </div>
+    <p class="help-block">Here you put the rest of the sentence</p>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="goal-date">By when??</label>  
+  <div class="col-md-4">
+  <input id="goal-date" name="goal-date" type="date" placeholder="09-09-2017" class="form-control input-md" required="" min='2017-09-04'>
+<!-- Need to update with dynamic 'today' -->
+  <span class="help-block">Pick the date you want to have this big goal completed by. Don't worry about breaking it down, that's next!</span>  
+  </div>
+</div>
+
+<div><p>This goal is worth {{points}} total points. Each objective will be a portion of this total.</p></div>
+            
             <!-- <input type='number' name='goal-points' value={{points}} min={{points}} max={{points}} required/> points. -->
-        </label>
-    </div><br> <!-- End goal div-->
+</div>
 
     <!--  HIDDEN FIELD - Counter, Points -->
+<div class='hidden'>
     <input name='objCounter' id='obj-counter' value='0' type='number' hidden>
     <input name='points' id='points' value={{points}} type='number' hidden>
+</div>
     
     <!-- *** Objectives ***-->
-    <div id='objective-holder'>
-        Objectives:<br>
+    <div id='objective-holder' class='container-fluid'>
+
     </div> <!-- End objective holder-->
     
-    <!-- Objective Button - Click to Add -->
-    <div id='obj-button'>
-        <input type="button" value='Click to Add' id='objective-button'/>
-    </div>
+<!-- Objective Button - Click to Add -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="objective-button">When you are ready to break down your goal, click to add objectives: </label>
+  <div class="col-md-4">
+    <button id='objective-button' name="objective-button" class="btn btn-inverse">Add more objectives!</button>
+  </div>
+</div>
 
     <br><br>
 
-    <!-- Submit Goal with Objectives Button -->
-    <div>
-        <label>
-        <input type='submit' value="Submit Goal and Objectives" required/>
-        </label>
-    </div>
-    </form>
+<!-- Submit Goal with Objectives Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submitobjs"></label>
+  <div class="col-md-4">
+    <button id="submitobjs" name="submitobjs" class="btn btn-inverse" type='submit' required>Submit everything!</button>
+  </div>
+</div>
+
+
+    </fieldset>
+</form>
 </div>
 </div>
 {% endblock %}

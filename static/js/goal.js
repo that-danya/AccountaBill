@@ -10,7 +10,6 @@
         var totalObjField = $('#obj-counter');
         var click = 0;
         click ++;
-        debugger;
         var points = $('#points');
         console.log(points);
 
@@ -25,33 +24,29 @@
         totalObjField.val(totalObj);
 
         // create div
-        var objDiv = $('<div>').attr({'class': 'objective',
+        var objDiv = $('<div>').attr({'class': 'objective col-md-4 form group',
                                       'id': 'objective' + totalObj});
-        var objAction = $('<input>').attr({'class': 'objective',
+        var objAction = $('<input>').attr({'class': 'objective form-control input-md',
                                            'type': 'text',
-                                           'value': 'do',
+                                           'placeholder': 'do',
                                            'name': 'obj-action' + totalObj,
                                            'id': 'obj-action' + totalObj,
                                            'required' : ''});
-        console.log(objAction.name);
-        var objNoun = $('<input>').attr({'class': 'objective',
+        var objNoun = $('<input>').attr({'class': 'objective form-control input-md',
                                          'type': 'text',
                                          'id': 'obj-noun' + totalObj,
-                                         'value': 'something',
+                                         'placeholder': 'something',
                                          'name': 'obj-noun' + totalObj,
                                          'required' : ''});
-        console.log(objNoun.name);
-        var objCheck = $('<input>').attr({'class': 'objective',
+        var objCheck = $('<input>').attr({'class': 'objective form-control input-md',
                                           'type': 'checkbox',
                                           'name': 'obj-check' + totalObj,
                                           'id': 'obj-check' + totalObj});
-        console.log(objCheck.name);
-        var objDate = $('<input>').attr({'class': 'objective',
+        var objDate = $('<input>').attr({'class': 'objective form-control input-md',
                                          'type': 'date',
                                          'name': 'obj-date' + totalObj,
                                          'id': 'obj-date' + totalObj,
                                          'required' : ''});
-        console.log(objDate.name);
         
         objDiv.append('I will ');
         objDiv.append(objAction);
