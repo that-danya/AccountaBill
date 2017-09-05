@@ -1,0 +1,5 @@
+body {
+    background-color: green;
+    background-size: cover;
+    background: url(static/images/wall.png) no-repeat center center;
+}

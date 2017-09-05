@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block script_for_page %}
-  <script src="/static/js/nav.js"></script>    
+  <script src="/static/js/nav.js"></script>
+  <link rel="stylesheet" href="/static/css/background.css"></script>
 {% endblock %}
 
 
@@ -34,7 +35,7 @@
 </div>
 
 
-<div class='container-fluid'>
+<div class='container-fluid body'>
 {% for flash in get_flashed_messages() %}
   {{ flash }}
 {% endfor %}
