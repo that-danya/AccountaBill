@@ -8,6 +8,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% block css %}
+{% endblock %}
 </head>
 <body>
 
@@ -23,6 +25,10 @@
 {# 
     This is not rendered
 #}
+
+    {% block base2_js %}
+    {% endblock %}
+    
     {% block script_for_page %}
     {% endblock %}
 
