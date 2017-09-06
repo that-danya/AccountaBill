@@ -113,9 +113,10 @@ function updateObjective(evt) {
                 // if a goaldiv has no radio buttons, call updateGoal with goal id passed in
                 // removeData(($('#chart' + result.goal_id)));
                 // console.log(($('#chart' + result.goal_id)));
-                aim = parseInt(aim) + parseInt(result.point_cost);
+                // aim = parseInt(aim) + parseInt(result.point_cost);
+                points = parseInt(points) + parseInt(result.point_cost);
                 
-                makeDoughnut(result.goal_id, parseInt(aim) - parseInt(points), parseInt(points));
+                makeDoughnut(result.goal_id, parseInt(aim) - points, points);
                 if ($('#goalDiv-' + result.goal_id).find(':radio').length === 0) {
                     updateGoal(result.goal_id);
                 } // end if

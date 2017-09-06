@@ -347,8 +347,9 @@ def twilio_response():
     str_num = user_number.strip('+')
     user_response = user_response.upper()
     user_response = user_response.rstrip()
-    #  regex for 'YES' 123
+    #  regex for  digits
     obj_match = re.match(r'\d+', user_response, re.I)
+
     # TODO: include and last message sent = today (if not, else: Sorry! You can only complete on day it's due!!)
     if obj_match:
         # # Twilio interaction
