@@ -22,7 +22,7 @@ class User(db.Model):
                         autoincrement=True,
                         primary_key=True)
     email = db.Column(db.String(64), nullable=False, unique=True)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
     phone = db.Column(db.String(15), nullable=False)

@@ -1,5 +1,5 @@
 from jinja2 import StrictUndefined
-
+from passlib.apps import custom_app_context as pwd_context
 from datetime import datetime
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -56,6 +56,8 @@ def process_login():
 
     email = request.form['email']
     password = request.form['password']
+    hash = pwd_context.hash(password)
+    ok = pwd_context.verify(password, hash)
 
     user = User.query.filter_by(email=email).first()
 
@@ -63,7 +65,7 @@ def process_login():
     if not user:
         flash('Not a valid user login.')
         return redirect('/login')
-    if user.password != password:
+    if not ok:
         flash('Incorrect password. Please try again.')
         return redirect('/login')
 
@@ -106,8 +108,10 @@ def register_process():
     lname = request.form['lname']
     phone = request.form['phonenum']
 
+    hash = pwd_context.hash(password)
+
     # Start DB transaction by assigning variables to User class
-    new_user = User(email=email, password=password, fname=fname, lname=lname, phone=phone)
+    new_user = User(email=email, password=hash, fname=fname, lname=lname, phone=phone)
 
     # Commit to DB
     db.session.add(new_user)
