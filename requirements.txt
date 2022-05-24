@@ -17,7 +17,7 @@ MarkupSafe==0.23
 pkg-resources==0.0.0
 psycopg2==2.6.1
 pycparser==2.18
-PyJWT==1.5.2
+PyJWT==2.4.0
 pyOpenSSL==17.2.0
 python-crontab==2.2.4
 python-dateutil==2.6.1
